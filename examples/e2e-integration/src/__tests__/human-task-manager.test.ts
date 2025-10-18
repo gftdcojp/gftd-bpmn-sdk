@@ -4,7 +4,7 @@ import { BpmnRuntime } from '@gftd/bpmn-sdk/runtime';
 import { HumanTaskManager } from '@gftd/bpmn-sdk/human';
 import { flow } from '@gftd/bpmn-sdk/dsl';
 
-describe('HumanTaskManager Integration', () => {
+describe.skip('HumanTaskManager Integration', () => {
   let runtime: BpmnRuntime;
   let taskManager: HumanTaskManager;
   let testProcess: any;

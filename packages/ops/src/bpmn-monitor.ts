@@ -383,6 +383,7 @@ export class BpmnMonitor {
     return {
       timestamp: new Date(),
       metrics: this.getAggregatedMetrics(),
+      processMetrics: Object.fromEntries(this.metricsData), // Add process-specific metrics
       spans: [], // アクティブスパンのリスト
       activeTraces: this.activeSpans.size,
       memoryUsage,

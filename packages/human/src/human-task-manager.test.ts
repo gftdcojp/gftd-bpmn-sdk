@@ -44,7 +44,7 @@ describe('@gftd/bpmn-sdk/human', () => {
         expect(task.id).toBeDefined();
         expect(task.name).toBe(taskData.name);
         expect(task.assignee).toBe(taskData.assignee);
-        expect(task.status).toBe('created');
+        expect(task.status).toBe('reserved');
         expect(task.createdAt).toBeInstanceOf(Date);
       });
 
@@ -267,7 +267,7 @@ describe('@gftd/bpmn-sdk/human', () => {
 
         const updatedTask = await taskManager.getTaskById(task.id);
         expect(updatedTask?.assignee).toBe('user2@example.com');
-        expect(updatedTask?.status).toBe('created'); // Reassignment resets status
+        expect(updatedTask?.status).toBe('reserved'); // Reassignment resets status
       });
     });
 
@@ -280,7 +280,7 @@ describe('@gftd/bpmn-sdk/human', () => {
           { name: 'Lifecycle Test', assignee: 'user@example.com' }
         );
 
-        expect(task.status).toBe('created');
+        expect(task.status).toBe('reserved');
 
         await taskManager.claimTask(task.id, 'user@example.com');
         let updatedTask = await taskManager.getTaskById(task.id);

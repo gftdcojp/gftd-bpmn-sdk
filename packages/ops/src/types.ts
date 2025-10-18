@@ -176,6 +176,7 @@ export interface HealthCheck {
 export interface PerformanceSnapshot {
   timestamp: Date;
   metrics: ProcessMetrics;
+  processMetrics?: Record<string, ProcessMetrics>;
   spans: TraceSpan[];
   activeTraces: number;
   memoryUsage: NodeJS.MemoryUsage;

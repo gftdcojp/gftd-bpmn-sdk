@@ -101,7 +101,7 @@ export class BpmnRuntime {
     }
     this.instances.get(processId)!.set(instanceId, {
       variables,
-      status: 'completed',
+      status: 'running',
       currentActivities: [],
       startTime: context.startTime,
     });

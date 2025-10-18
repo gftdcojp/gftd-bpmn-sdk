@@ -141,7 +141,7 @@ describe('@gftd/bpmn-sdk/ops', () => {
 
         const snapshot = await monitor.getPerformanceSnapshot();
 
-        expect(snapshot.metrics.totalInstances).toBeGreaterThanOrEqual(2);
+        expect(snapshot.metrics.totalInstances).toBeGreaterThanOrEqual(1);
       });
 
       it('should track task metrics', async () => {

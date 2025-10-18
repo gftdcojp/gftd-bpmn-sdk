@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { BpmnImporter, parseXml } from './bpmn-importer';
 
-describe.skip('@gftd/bpmn-sdk/importer', () => {
+describe('@gftd/bpmn-sdk/importer', () => {
   let importer: BpmnImporter;
 
   beforeEach(() => {

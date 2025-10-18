@@ -59,7 +59,7 @@ export class HumanTaskManager {
       candidateUsers: options.candidateUsers,
       candidateGroups: options.candidateGroups,
       dueDate: options.dueDate,
-      status: 'created',
+      status: options.assignee ? 'reserved' : 'ready',
       createdAt: now,
       variables: options.variables,
       formKey: options.formKey,
@@ -119,7 +119,7 @@ export class HumanTaskManager {
       throw new Error(`Task ${taskId} not found`);
     }
 
-    if (task.status !== 'created' && task.status !== 'ready') {
+    if (task.status !== 'created' && task.status !== 'ready' && task.status !== 'reserved') {
       throw new Error(`Task ${taskId} is not claimable`);
     }
 
@@ -388,7 +388,7 @@ export class HumanTaskManager {
 
     const oldAssignee = task.assignee;
     task.assignee = newAssignee;
-    task.status = 'created'; // 再割当時はステータスをリセット
+    task.status = 'reserved'; // 再割当時はステータスをリセット
     task.claimedBy = undefined;
     task.claimedAt = undefined;
 

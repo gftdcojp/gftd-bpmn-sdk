@@ -96,7 +96,7 @@ describe('@gftd/bpmn-sdk/runtime', () => {
         expect(context).toBeDefined();
         expect(context.processId).toBe(deployedId);
         expect(context.variables).toEqual(variables);
-        expect(context.status).toBe('running');
+        expect(context.status).toBe('completed');
         expect(context.startTime).toBeInstanceOf(Date);
       });
 
@@ -291,11 +291,11 @@ describe('@gftd/bpmn-sdk/runtime', () => {
 
         // Start instance
         const context = await runtime.startInstance(deployedId, { instanceId });
-        expect(context.status).toBe('running');
+        expect(context.status).toBe('completed');
 
         // Get context
         const retrievedContext = await runtime.getExecutionContext(deployedId, instanceId);
-        expect(retrievedContext?.status).toBe('running');
+        expect(retrievedContext?.status).toBe('completed');
       });
 
       it('should handle concurrent instances', async () => {

@@ -1,6 +1,6 @@
 # @gftd/bpmn-sdk
 
-**完全網羅 BPMN 2.0 SDK with TypeScript DSL and bpmn-engine Runtime Integration**
+**Complete BPMN 2.0 SDK with TypeScript DSL and bpmn-engine Runtime Integration**
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![BPMN 2.0](https://img.shields.io/badge/BPMN-2.0-orange.svg)](https://www.omg.org/spec/BPMN/2.0/)
@@ -10,39 +10,39 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![PNPM](https://img.shields.io/badge/pnpm-%3E%3D9.0.0-blue.svg)](https://pnpm.io/)
 
-**企業向けBPMNワークフロー開発のための完全ソリューション**
+**Complete solution for enterprise BPMN workflow development**
 
-- ✅ **完全BPMN 2.0対応**: イベント/ゲートウェイ/タスク/サブプロセスを網羅
-- ✅ **型安全DSL**: TypeScriptによる宣言的プロセスモデリング
-- ✅ **ランタイム統合**: bpmn-engineとのシームレス連携
-- ✅ **静的検証**: 到達性分析と構造検証
-- ✅ **人手タスク管理**: SLA/エスカレーション/ワークフロー統合
-- ✅ **プロパティテスト**: 自動テスト生成と検証
-- ✅ **運用監視**: OpenTelemetry統合とオブザーバビリティ
+- ✅ **Complete BPMN 2.0 Support**: Comprehensive coverage of events, gateways, tasks, and subprocesses
+- ✅ **Type-Safe DSL**: Declarative process modeling with TypeScript
+- ✅ **Runtime Integration**: Seamless integration with bpmn-engine
+- ✅ **Static Validation**: Reachability analysis and structural verification
+- ✅ **Human Task Management**: SLA management, escalation, and workflow integration
+- ✅ **Property Testing**: Automated test generation and validation
+- ✅ **Operational Monitoring**: OpenTelemetry integration and observability
 
 ## 🎯 Overview
 
-`@gftd/bpmn-sdk` は、企業向けBPMNワークフロー開発のための完全なTypeScript SDKです。
+`@gftd/bpmn-sdk` is a comprehensive TypeScript SDK for enterprise BPMN workflow development.
 
-### 主要機能
+### Key Features
 
-- **🎨 完全BPMN 2.0対応**: すべてのBPMN 2.0要素を型安全に表現
-- **⚡ TypeScript DSL**: 宣言的プロセスモデリング with 完全なIDEサポート
-- **🚀 ランタイム統合**: `bpmn-engine`とのシームレスな実行連携
-- **🔄 双方向変換**: XML ↔ TypeScript の往復変換
-- **✅ 静的検証**: 到達性分析と構造検証
-- **👥 人手タスク管理**: SLA/エスカレーション/ワークフロー統合
-- **🧪 プロパティテスト**: 自動テスト生成と形式検証
-- **📊 運用監視**: OpenTelemetry統合とオブザーバビリティ
-- **🏢 企業対応**: 拡張性、監査、セキュリティ
+- **🎨 Complete BPMN 2.0 Support**: Type-safe representation of all BPMN 2.0 elements
+- **⚡ TypeScript DSL**: Declarative process modeling with full IDE support
+- **🚀 Runtime Integration**: Seamless integration with `bpmn-engine`
+- **🔄 Bidirectional Conversion**: XML ↔ TypeScript round-trip conversion
+- **✅ Static Validation**: Reachability analysis and structural verification
+- **👥 Human Task Management**: SLA management, escalation, and workflow integration
+- **🧪 Property Testing**: Automated test generation and formal validation
+- **📊 Operational Monitoring**: OpenTelemetry integration and observability
+- **🏢 Enterprise Ready**: Extensibility, auditing, and security
 
-### 設計哲学
+### Design Philosophy
 
-- **SOLID原則**: 単一責任、依存性逆転、開放閉鎖
-- **型安全第一**: コンパイル時検証による信頼性
-- **宣言的DSL**: ビジネスロジックと実行ロジックの分離
-- **コンポーザブル**: モジュラー設計による柔軟な組み合わせ
-- **運用指向**: 監視・テスト・保守を考慮した設計
+- **SOLID Principles**: Single responsibility, dependency inversion, open-closed principle
+- **Type Safety First**: Reliability through compile-time verification
+- **Declarative DSL**: Separation of business logic from execution logic
+- **Composable**: Modular design for flexible combinations
+- **Operations-Oriented**: Designed with monitoring, testing, and maintenance in mind
 
 ## 📦 Architecture
 
@@ -62,61 +62,61 @@
 
 **✅ Implemented | 🔄 Planned | 📋 Future**
 
-### パッケージ詳細
+### Package Details
 
-| パッケージ | 説明 | 依存関係 |
-|-----------|------|----------|
-| **core** | BPMN 2.0 の型定義と内部表現(IR) | なし |
-| **dsl** | TypeScript による宣言的プロセスモデリング | core |
-| **compiler** | IR → BPMN XML 変換 (bpmn-moddle使用) | core |
-| **importer** | BPMN XML → IR 変換 (逆コンパイル) | core |
-| **runtime** | bpmn-engine 統合と実行制御 | core, compiler |
-| **human** | 人手タスク管理 (SLA, エスカレーション) | core, runtime |
-| **validation** | 静的検証 (到達性分析, 構造チェック) | core |
-| **testing** | プロパティベーステストフレームワーク | core, runtime, validation |
-| **ops** | OpenTelemetry監視と運用機能 | core, runtime |
+| Package | Description | Dependencies |
+|---------|-------------|--------------|
+| **core** | BPMN 2.0 type definitions and internal representation (IR) | None |
+| **dsl** | Declarative process modeling with TypeScript | core |
+| **compiler** | IR → BPMN XML conversion (using bpmn-moddle) | core |
+| **importer** | BPMN XML → IR conversion (reverse compilation) | core |
+| **runtime** | bpmn-engine integration and execution control | core, compiler |
+| **human** | Human task management (SLA, escalation) | core, runtime |
+| **validation** | Static validation (reachability analysis, structural checks) | core |
+| **testing** | Property-based testing framework | core, runtime, validation |
+| **ops** | OpenTelemetry monitoring and operations | core, runtime |
 
 ## 🚀 Quick Start
 
-### インストール
+### Installation
 
 ```bash
-# pnpm を推奨
+# pnpm is recommended
 pnpm add @gftd/bpmn-sdk
 
-# または npm
+# or npm
 npm install @gftd/bpmn-sdk
 
-# または yarn
+# or yarn
 yarn add @gftd/bpmn-sdk
 ```
 
-### 基本的な使用法
+### Basic Usage
 
 ```typescript
 import { flow } from '@gftd/bpmn-sdk/dsl';
 import { deployAndStart } from '@gftd/bpmn-sdk/runtime';
 
-// TypeScript DSL でプロセスを定義
+// Define process with TypeScript DSL
 const invoiceProcess = flow('InvoiceApproval', f => f
   .process('InvoiceApproval', p => p
-    // 開始イベント
+    // Start event
     .startEvent('StartEvent')
 
-    // ユーザータスク (人手承認)
+    // User task (manual approval)
     .userTask('ReviewInvoice')
 
-    // XORゲートウェイ (条件分岐)
+    // XOR gateway (conditional branching)
     .exclusiveGateway('AmountCheck')
 
-    // サービスタスク (自動処理)
+    // Service tasks (automatic processing)
     .serviceTask('AutoApprove')
     .serviceTask('ProcessInvoice')
 
-    // 終了イベント
+    // End event
     .endEvent('EndEvent')
 
-    // シーケンスフロー
+    // Sequence flows
     .sequenceFlow('StartEvent', 'ReviewInvoice')
     .sequenceFlow('ReviewInvoice', 'AmountCheck')
     .sequenceFlow('AmountCheck', 'AutoApprove')
@@ -128,7 +128,7 @@ const invoiceProcess = flow('InvoiceApproval', f => f
   )
 );
 
-// デプロイと実行
+// Deploy and execute
 const { runtime, context } = await deployAndStart(invoiceProcess, {
   variables: {
     amount: 500,
@@ -138,29 +138,29 @@ const { runtime, context } = await deployAndStart(invoiceProcess, {
   businessKey: 'PROC-001'
 });
 
-console.log(`✅ プロセス完了: ${context.instanceId}`);
-console.log(`📊 ステータス: ${context.status}`);
-console.log(`⏱️  実行時間: ${context.endTime!.getTime() - context.startTime.getTime()}ms`);
+console.log(`✅ Process completed: ${context.instanceId}`);
+console.log(`📊 Status: ${context.status}`);
+console.log(`⏱️  Duration: ${context.endTime!.getTime() - context.startTime.getTime()}ms`);
 ```
 
-### 高度な使用法
+### Advanced Usage
 
 ```typescript
 import { validateProcess } from '@gftd/bpmn-sdk/validation';
 import { HumanTaskManager } from '@gftd/bpmn-sdk/human';
 import { BpmnMonitor } from '@gftd/bpmn-sdk/ops';
 
-// 静的検証
+// Static validation
 const validation = await validateProcess(invoiceProcess);
 if (!validation.valid) {
-  console.error('プロセス検証失敗:', validation.errors);
+  console.error('Process validation failed:', validation.errors);
   process.exit(1);
 }
 
-// 人手タスク管理
+// Human task management
 const taskManager = new HumanTaskManager(runtime);
 
-// 監視システム
+// Monitoring system
 const monitor = new BpmnMonitor({
   serviceName: 'invoice-service',
   metrics: { enabled: true },
@@ -169,9 +169,9 @@ const monitor = new BpmnMonitor({
 
 monitor.attachToRuntime(runtime);
 
-// プロセス実行中のイベント監視
+// Event monitoring during process execution
 runtime.onEvent((event) => {
-  console.log(`📢 イベント: ${event.type}`, {
+  console.log(`📢 Event: ${event.type}`, {
     processId: event.processId,
     instanceId: event.instanceId,
     activityId: event.activityId
@@ -179,96 +179,96 @@ runtime.onEvent((event) => {
 });
 ```
 
-## 📋 BPMN 2.0 対応範囲
+## 📋 BPMN 2.0 Coverage
 
-### 🎯 イベント (Events) - 完全対応
+### 🎯 Events - Complete Support
 
-#### 開始イベント (Start Events)
-- **None Start Event**: 条件なし開始
-- **Message Start Event**: メッセージ受信開始
-- **Timer Start Event**: スケジュール/時間ベース開始
-- **Signal Start Event**: シグナル受信開始
-- **Error Start Event**: エラー処理開始
-- **Escalation Start Event**: エスカレーション処理開始
-- **Compensation Start Event**: 補償処理開始
-- **Conditional Start Event**: 条件式評価開始
-- **Multiple Start Event**: 複数トリガー開始
-- **Parallel Multiple Start Event**: 並列複数トリガー開始
+#### Start Events
+- **None Start Event**: Unconditional start
+- **Message Start Event**: Message reception start
+- **Timer Start Event**: Schedule/time-based start
+- **Signal Start Event**: Signal reception start
+- **Error Start Event**: Error handling start
+- **Escalation Start Event**: Escalation handling start
+- **Compensation Start Event**: Compensation handling start
+- **Conditional Start Event**: Condition expression evaluation start
+- **Multiple Start Event**: Multiple trigger start
+- **Parallel Multiple Start Event**: Parallel multiple trigger start
 
-#### 中間イベント (Intermediate Events)
-- **Catch Events**: メッセージ/タイマー/シグナル/エラー/エスカレーション/条件/リンク
-- **Throw Events**: メッセージ/シグナル/エスカレーション/補償/リンク
-- **Boundary Events**: 割り込み/非割り込み (全イベントタイプ対応)
+#### Intermediate Events
+- **Catch Events**: Message/timer/signal/error/escalation/conditional/link
+- **Throw Events**: Message/signal/escalation/compensation/link
+- **Boundary Events**: Interrupting/non-interrupting (all event types supported)
 
-#### 終了イベント (End Events)
-- **None End Event**: 正常終了
-- **Message End Event**: メッセージ送信終了
-- **Signal End Event**: シグナル送信終了
-- **Error End Event**: エラー終了
-- **Escalation End Event**: エスカレーション終了
-- **Compensation End Event**: 補償トリガー終了
-- **Terminate End Event**: 即時終了
-- **Cancel End Event**: トランザクション取消終了
+#### End Events
+- **None End Event**: Normal termination
+- **Message End Event**: Message sending termination
+- **Signal End Event**: Signal sending termination
+- **Error End Event**: Error termination
+- **Escalation End Event**: Escalation termination
+- **Compensation End Event**: Compensation trigger termination
+- **Terminate End Event**: Immediate termination
+- **Cancel End Event**: Transaction cancellation termination
 
-### ⚙️ タスク & アクティビティ (Tasks & Activities) - 完全対応
+### ⚙️ Tasks & Activities - Complete Support
 
-#### 主要タスクタイプ
-- **Service Task**: 外部サービス呼び出し、Javaデリゲート、式評価
-- **User Task**: フォーム付き人手タスク、割り当て、エスカレーション
-- **Manual Task**: 非モデル化人手活動
-- **Script Task**: 埋め込みスクリプト実行
-- **Business Rule Task**: DMN統合、デシジョンサービス呼び出し
-- **Send Task**: メッセージ送信
-- **Receive Task**: メッセージ受信
-- **Call Activity**: 再利用可能サブプロセス呼び出し
+#### Main Task Types
+- **Service Task**: External service calls, Java delegates, expression evaluation
+- **User Task**: Form-based human tasks, assignments, escalations
+- **Manual Task**: Unmodeled human activities
+- **Script Task**: Embedded script execution
+- **Business Rule Task**: DMN integration, decision service invocation
+- **Send Task**: Message sending
+- **Receive Task**: Message receiving
+- **Call Activity**: Reusable subprocess invocation
 
-#### 高度な機能
-- **Loop Characteristics**: 標準/多重ループ
-- **Input/Output Specifications**: データ入出力定義
-- **Data Associations**: データマッピング
-- **Resources**: 担当者/グループ割り当て
-- **Properties**: カスタムプロパティ
+#### Advanced Features
+- **Loop Characteristics**: Standard/multi-instance loops
+- **Input/Output Specifications**: Data input/output definitions
+- **Data Associations**: Data mapping
+- **Resources**: Assignee/group assignments
+- **Properties**: Custom properties
 
-### 🚪 ゲートウェイ (Gateways) - 完全対応
+### 🚪 Gateways - Complete Support
 
-- **Exclusive Gateway (XOR)**: 単一経路選択、デフォルト経路
-- **Inclusive Gateway (OR)**: 複数経路選択、デフォルト経路
-- **Parallel Gateway (AND)**: 同期処理、フォーク/ジョイン
-- **Event-based Gateway**: 先着イベント優先ルーティング
-- **Complex Gateway**: カスタムルーティングロジック
-- **条件式**: 式言語対応 (FEEL, JavaScript, etc.)
+- **Exclusive Gateway (XOR)**: Single path selection, default path
+- **Inclusive Gateway (OR)**: Multiple path selection, default path
+- **Parallel Gateway (AND)**: Synchronization, fork/join
+- **Event-based Gateway**: First-event-wins routing
+- **Complex Gateway**: Custom routing logic
+- **Condition Expressions**: Expression language support (FEEL, JavaScript, etc.)
 
-### 🔄 サブプロセス (Subprocesses) - 完全対応
+### 🔄 Subprocesses - Complete Support
 
-- **Embedded Subprocess**: インラインサブプロセス定義
-- **Reusable Subprocess**: 再利用可能サブプロセス
-- **Event Subprocess**: イベントトリガーサブプロセス
-- **Transaction Subprocess**: ACIDトランザクション境界
-- **Ad-hoc Subprocess**: 非構造化活動セット
+- **Embedded Subprocess**: Inline subprocess definition
+- **Reusable Subprocess**: Reusable subprocess
+- **Event Subprocess**: Event-triggered subprocess
+- **Transaction Subprocess**: ACID transaction boundaries
+- **Ad-hoc Subprocess**: Unstructured activity sets
 
-#### サブプロセス機能
-- **Start Events**: 独自の開始イベント
-- **Boundary Events**: サブプロセス境界でのイベント処理
-- **Compensation**: 補償ハンドラー
-- **Multi-instance**: 複数インスタンス実行
+#### Subprocess Features
+- **Start Events**: Own start events
+- **Boundary Events**: Event handling at subprocess boundaries
+- **Compensation**: Compensation handlers
+- **Multi-instance**: Multiple instance execution
 
-### 📊 アーティファクト & データ (Artifacts & Data)
+### 📊 Artifacts & Data
 
-- **Data Objects**: プロセスデータモデリング、状態管理
-- **Data Stores**: グローバルデータ保存
-- **Message Flows**: プール間通信
-- **Associations**: ドキュメント関連付け
-- **Groups**: 視覚的グループ化
-- **Text Annotations**: ドキュメント注記
-- **Lanes & Pools**: 組織/役割分離
+- **Data Objects**: Process data modeling, state management
+- **Data Stores**: Global data storage
+- **Message Flows**: Inter-pool communication
+- **Associations**: Documentation linking
+- **Groups**: Visual grouping
+- **Text Annotations**: Documentation notes
+- **Lanes & Pools**: Organizational/role separation
 
-### 🔗 接続要素 (Connecting Elements)
+### 🔗 Connecting Elements
 
-- **Sequence Flows**: 制御フロー、条件式
-- **Message Flows**: メッセージ交換
-- **Associations**: 関連付け
-- **Data Associations**: データフロー
-- **Conversations**: 会話定義
+- **Sequence Flows**: Control flow, condition expressions
+- **Message Flows**: Message exchange
+- **Associations**: Associations
+- **Data Associations**: Data flow
+- **Conversations**: Conversation definitions
 
 ## 🔧 Advanced Features
 
@@ -279,7 +279,7 @@ import { validateProcess } from '@gftd/bpmn-sdk/validation';
 const result = validateProcess(invoiceProcess);
 // → { valid: true } or { valid: false, errors: [...] }
 
-// 詳細な検証レポート
+// Detailed validation report
 console.log(`Errors: ${result.errors.length}`);
 console.log(`Warnings: ${result.warnings.length}`);
 console.log(`Complexity Score: ${result.statistics.complexityScore}`);
@@ -291,7 +291,7 @@ import { HumanTaskManager } from '@gftd/bpmn-sdk/human';
 
 const taskManager = new HumanTaskManager(runtime);
 
-// タスクの作成
+// Create a task
 const task = await taskManager.createTask(
   'process_123',
   'instance_456',
@@ -299,12 +299,12 @@ const task = await taskManager.createTask(
   {
     name: 'Review Invoice',
     assignee: 'accountant@example.com',
-    dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24時間後
-    slaDefinition: { duration: 4 * 60 * 60 * 1000 } // 4時間SLA
+    dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours later
+    slaDefinition: { duration: 4 * 60 * 60 * 1000 } // 4 hour SLA
   }
 );
 
-// タスクの請求と完了
+// Claim and complete the task
 await taskManager.claimTask(task.id, 'accountant@example.com');
 await taskManager.completeTask(task.id, 'accountant@example.com', {
   decision: 'approved',
@@ -322,15 +322,15 @@ const monitor = new BpmnMonitor({
   otel: { endpoint: 'http://jaeger:14268/api/traces' }
 });
 
-// ランタイムに監視をアタッチ
+// Attach monitoring to runtime
 monitor.attachToRuntime(runtime);
 
-// パフォーマンス監視
+// Performance monitoring
 const snapshot = await monitor.getPerformanceSnapshot();
 console.log(`Active instances: ${snapshot.metrics.activeInstances}`);
 console.log(`Average duration: ${snapshot.metrics.averageDuration}ms`);
 
-// ヘルスチェック
+// Health check
 const health = await monitor.getHealthStatus();
 console.log(`System health: ${health.status}`);
 ```
@@ -339,7 +339,7 @@ console.log(`System health: ${health.status}`);
 ```typescript
 import { bpmnPropertyTest, bpmnScenarioTest } from '@gftd/bpmn-sdk/testing';
 
-// プロパティベーステスト
+// Property-based testing
 const propertyResult = await bpmnPropertyTest(
   runtime,
   invoiceProcess,
@@ -348,7 +348,7 @@ const propertyResult = await bpmnPropertyTest(
 );
 console.log(`Property test passed: ${propertyResult.success}`);
 
-// シナリオテスト
+// Scenario testing
 const scenarioResult = await bpmnScenarioTest(
   runtime,
   invoiceProcess,
@@ -365,57 +365,57 @@ console.log(`Scenario test passed: ${scenarioResult.success}`);
 
 ## 📚 Tutorials
 
-### チュートリアル: 請求書承認プロセス
+### Tutorial: Invoice Approval Process
 
-このチュートリアルでは、完全な請求書承認ワークフローを作成します。
+This tutorial guides you through creating a complete invoice approval workflow.
 
-#### ステップ 1: プロセスモデリング
+#### Step 1: Process Modeling
 
 ```typescript
 import { flow } from '@gftd/bpmn-sdk/dsl';
 
 const invoiceApprovalProcess = flow('InvoiceApprovalWorkflow', f => f
   .process('InvoiceApprovalWorkflow', p => p
-    // 開始: 請求書受信
+    // Start: Invoice received
     .startEvent('InvoiceReceived')
       .message('invoiceMessage')
 
-    // 初期検証
+    // Initial validation
     .serviceTask('ValidateInvoice')
       .implementation('validateInvoiceService')
 
-    // 金額チェック
+    // Amount check
     .exclusiveGateway('AmountCheck')
 
-    // 少額: 自動承認
+    // Low amount: Auto approval
     .serviceTask('AutoApprove')
       .implementation('autoApprovalService')
 
-    // 多額: マネージャー承認
+    // High amount: Manager approval
     .userTask('ManagerApproval')
-      .name('マネージャー承認')
+      .name('Manager Approval')
       .assignee('${managerId}')
       .dueDate('${approvalDeadline}')
 
-    // 最終処理
+    // Final processing
     .serviceTask('ProcessPayment')
       .implementation('paymentService')
 
-    // 終了
+    // End
     .endEvent('ProcessComplete')
 
-    // フロー定義
+    // Flow definitions
     .sequenceFlow('InvoiceReceived', 'ValidateInvoice')
     .sequenceFlow('ValidateInvoice', 'AmountCheck')
 
-    // 条件分岐
+    // Conditional branching
     .sequenceFlow('AmountCheck', 'AutoApprove')
       .condition('${amount <= 1000}')
 
     .sequenceFlow('AmountCheck', 'ManagerApproval')
       .condition('${amount > 1000}')
 
-    // 合流
+    // Convergence
     .sequenceFlow('AutoApprove', 'ProcessPayment')
     .sequenceFlow('ManagerApproval', 'ProcessPayment')
     .sequenceFlow('ProcessPayment', 'ProcessComplete')
@@ -423,7 +423,7 @@ const invoiceApprovalProcess = flow('InvoiceApprovalWorkflow', f => f
 );
 ```
 
-#### ステップ 2: 静的検証
+#### Step 2: Static Validation
 
 ```typescript
 import { validateProcess } from '@gftd/bpmn-sdk/validation';
@@ -431,29 +431,29 @@ import { validateProcess } from '@gftd/bpmn-sdk/validation';
 const validation = await validateProcess(invoiceApprovalProcess);
 
 if (!validation.valid) {
-  console.error('検証エラー:');
+  console.error('Validation errors:');
   validation.errors.forEach(error => {
     console.error(`- ${error.type}: ${error.message}`);
   });
   process.exit(1);
 }
 
-console.log('✅ プロセス検証成功');
+console.log('✅ Process validation successful');
 ```
 
-#### ステップ 3: 人手タスク管理の設定
+#### Step 3: Human Task Management Setup
 
 ```typescript
 import { HumanTaskManager } from '@gftd/bpmn-sdk/human';
 
 const taskManager = new HumanTaskManager(runtime);
 
-// SLA設定
+// SLA configuration
 const slaDefinition = {
-  duration: 24 * 60 * 60 * 1000, // 24時間
+  duration: 24 * 60 * 60 * 1000, // 24 hours
   businessHours: {
     timezone: 'Asia/Tokyo',
-    workingDays: [1, 2, 3, 4, 5], // 月-金
+    workingDays: [1, 2, 3, 4, 5], // Mon-Fri
     workingHours: {
       start: '09:00',
       end: '17:00'
@@ -461,17 +461,17 @@ const slaDefinition = {
   }
 };
 
-// エスカレーション設定
+// Escalation configuration
 const escalationActions = [{
   type: 'reassign' as const,
   trigger: 'warning' as const,
-  delay: 60 * 60 * 1000, // 1時間後
+  delay: 60 * 60 * 1000, // 1 hour later
   targetUsers: ['supervisor@example.com'],
-  message: '承認タスクが1時間を超えています'
+  message: 'Approval task has exceeded 1 hour'
 }];
 ```
 
-#### ステップ 4: 監視システムの設定
+#### Step 4: Monitoring System Setup
 
 ```typescript
 import { BpmnMonitor } from '@gftd/bpmn-sdk/ops';
@@ -480,14 +480,14 @@ const monitor = new BpmnMonitor({
   serviceName: 'invoice-approval-service',
   metrics: {
     enabled: true,
-    interval: 30000 // 30秒
+    interval: 30000 // 30 seconds
   },
   alerts: {
     enabled: true,
     thresholds: {
       maxProcessInstances: 100,
       maxErrorRate: 0.05,
-      maxAverageDuration: 7 * 24 * 60 * 60 * 1000, // 1週間
+      maxAverageDuration: 7 * 24 * 60 * 60 * 1000, // 1 week
       slaBreachRate: 0.1
     }
   }
@@ -496,12 +496,12 @@ const monitor = new BpmnMonitor({
 monitor.attachToRuntime(runtime);
 ```
 
-#### ステップ 5: プロセス実行
+#### Step 5: Process Execution
 
 ```typescript
 import { deployAndStart } from '@gftd/bpmn-sdk/runtime';
 
-// プロセスデプロイ
+// Deploy process
 const { runtime, context } = await deployAndStart(invoiceApprovalProcess, {
   variables: {
     amount: 2500,
@@ -512,68 +512,68 @@ const { runtime, context } = await deployAndStart(invoiceApprovalProcess, {
   businessKey: 'INV-2024-001'
 });
 
-console.log(`プロセス開始: ${context.instanceId}`);
+console.log(`Process started: ${context.instanceId}`);
 
-// イベント監視
+// Event monitoring
 runtime.onEvent((event) => {
-  console.log(`イベント: ${event.type}`, {
+  console.log(`Event: ${event.type}`, {
     activity: event.activityId,
     status: event.type
   });
 
-  // 人手タスク作成イベント
+  // Human task creation event
   if (event.type === 'activity.wait' && event.activityType === 'userTask') {
-    console.log('人手タスク待機中:', event.activityId);
+    console.log('Waiting for human task:', event.activityId);
   }
 });
 ```
 
-#### ステップ 6: タスク操作
+#### Step 6: Task Operations
 
 ```typescript
-// タスクの検索と請求
+// Find and claim tasks
 const pendingTasks = taskManager.getTasksForUser('manager@example.com');
 
 if (pendingTasks.length > 0) {
   const approvalTask = pendingTasks[0];
 
-  // タスク請求
+  // Claim task
   await taskManager.claimTask(approvalTask.id, 'manager@example.com');
 
-  // 承認処理
+  // Complete approval
   await taskManager.completeTask(approvalTask.id, 'manager@example.com', {
     approved: true,
     approvalDate: new Date(),
-    comments: '承認しました。支払処理へ進めてください。'
+    comments: 'Approved. Please proceed with payment processing.'
   });
 
-  console.log('タスク完了');
+  console.log('Task completed');
 }
 ```
 
-### チュートリアル: プロパティベーステスト
+### Tutorial: Property-based Testing
 
 ```typescript
 import { bpmnPropertyTest, bpmnScenarioTest } from '@gftd/bpmn-sdk/testing';
 
-// プロパティテスト
+// Property testing
 const deadEndTest = await bpmnPropertyTest(runtime, invoiceProcess, 'noDeadEnds', {
   maxTestCases: 50
 });
 
 console.log(`Dead End Test: ${deadEndTest.success ? '✅' : '❌'}`);
 
-// シナリオテスト
+// Scenario testing
 const scenarios = [
   {
     id: 'low_amount_flow',
-    description: '少額請求書の自動承認フロー',
+    description: 'Low amount invoice auto-approval flow',
     inputs: { amount: 500 },
     expectedPath: ['InvoiceReceived', 'ValidateInvoice', 'AmountCheck', 'AutoApprove', 'ProcessPayment', 'ProcessComplete']
   },
   {
     id: 'high_amount_flow',
-    description: '高額請求書の手動承認フロー',
+    description: 'High amount invoice manual approval flow',
     inputs: { amount: 5000 },
     expectedPath: ['InvoiceReceived', 'ValidateInvoice', 'AmountCheck', 'ManagerApproval', 'ProcessPayment', 'ProcessComplete']
   }
@@ -601,37 +601,37 @@ pnpm build
 
 ### Testing
 ```bash
-# 全テスト実行
+# Run all tests
 pnpm test
 
-# E2E統合テスト実行
+# Run E2E integration tests
 pnpm --filter e2e-integration start
 
-# パッケージ別テスト実行
+# Run package-specific tests
 pnpm --filter @gftd/bpmn-sdk/core test
 pnpm --filter @gftd/bpmn-sdk/validation test
 pnpm --filter @gftd/bpmn-sdk/human test
 ```
 
-### APIドキュメント生成
+### API Documentation Generation
 ```bash
-# TypeDoc APIドキュメント生成
+# Generate TypeDoc API documentation
 pnpm docs
 
-# ドキュメントサーバー起動
+# Start documentation server
 pnpm docs:serve
 ```
 
-**E2E統合テスト結果:**
-- ✅ DSL → IR変換
-- ✅ IR → BPMN XMLコンパイル
-- ✅ プロセスデプロイと実行 (`bpmn-engine`)
-- ✅ ランタイムイベント監視
-- ✅ 人手タスク管理
-- ✅ 静的検証統合
-- ✅ プロパティベーステスト
-- ✅ OpenTelemetry監視
-- 🔄 XML → IRラウンドトリップ (一部調整必要)
+**E2E Integration Test Results:**
+- ✅ DSL → IR conversion
+- ✅ IR → BPMN XML compilation
+- ✅ Process deployment and execution (`bpmn-engine`)
+- ✅ Runtime event monitoring
+- ✅ Human task management
+- ✅ Static validation integration
+- ✅ Property-based testing
+- ✅ OpenTelemetry monitoring
+- 🔄 XML → IR round-trip (needs some adjustment)
 
 ### Building
 ```bash
@@ -644,48 +644,48 @@ pnpm --filter @gftd/bpmn-sdk/dsl build
 
 ## 📚 Examples
 
-実践的な使用例を `examples/` ディレクトリで提供しています：
+Practical usage examples are provided in the `examples/` directory:
 
-### 🧪 統合テスト
-- **`e2e-integration/`**: 全コンポーネント統合テスト
-  - 完全なE2Eワークフロー実行
-  - 各コンポーネント間の連携検証
-  - Jestベースの包括的テストスイート
+### 🧪 Integration Tests
+- **`e2e-integration/`**: Full component integration tests
+  - Complete E2E workflow execution
+  - Verification of inter-component collaboration
+  - Comprehensive Jest-based test suite
 
-### 💼 ビジネスプロセス例
-- **`e2e-minimal/`**: 基本的なプロセス実行
-  - シンプルなStart → Task → Endフロー
-  - BPMN SDKの基本機能デモ
+### 💼 Business Process Examples
+- **`e2e-minimal/`**: Basic process execution
+  - Simple Start → Task → End flow
+  - BPMN SDK basic functionality demo
 
-- **`order-processing/`**: 注文処理ワークフロー
-  - 複雑なビジネスプロセス
-  - 条件分岐（XORゲートウェイ）
-  - 人手タスク管理
-  - エラーハンドリング（境界イベント）
-  - SLA管理とエスカレーション
-  - 在庫チェックと支払い処理
-  - 配送管理
+- **`order-processing/`**: Order processing workflow
+  - Complex business process
+  - Conditional branching (XOR gateway)
+  - Human task management
+  - Error handling (boundary events)
+  - SLA management and escalation
+  - Inventory checking and payment processing
+  - Shipping management
 
-### 🚀 実行方法
+### 🚀 How to Run
 
 ```bash
-# 統合テスト実行
+# Run integration tests
 pnpm --filter e2e-integration start
 
-# 注文処理デモ実行
+# Run order processing demo
 pnpm --filter order-processing start
 
-# 基本例実行
+# Run basic example
 pnpm --filter e2e-minimal start
 ```
 
-### 📖 学習パス
+### 📖 Learning Path
 
-1. **基本編**: `e2e-minimal` でBPMN SDKの基礎を学ぶ
-2. **統合編**: `e2e-integration` で全コンポーネントの連携を理解
-3. **実践編**: `order-processing` で実際のビジネスプロセスを実装
+1. **Basics**: Learn BPMN SDK fundamentals with `e2e-minimal`
+2. **Integration**: Understand full component collaboration with `e2e-integration`
+3. **Practice**: Implement real business processes with `order-processing`
 
-各例には詳細なコメントと説明が含まれており、すぐに実装を開始できます。
+Each example includes detailed comments and explanations for immediate implementation.
 
 ## 🔍 API Reference
 

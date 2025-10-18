@@ -114,6 +114,7 @@ async function runCompleteIntegrationTest() {
         enabled: true,
         thresholds: {
           maxProcessInstances: 10,
+          maxActiveTasks: 20,
           maxErrorRate: 0.5,
           maxAverageDuration: 30000,
           slaBreachRate: 0.1,

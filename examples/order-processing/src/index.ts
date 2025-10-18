@@ -293,6 +293,7 @@ async function runOrderProcessingDemo() {
         enabled: true,
         thresholds: {
           maxProcessInstances: 50,
+          maxActiveTasks: 25,
           maxErrorRate: 0.1,
           maxAverageDuration: 30 * 60 * 1000, // 30分
           slaBreachRate: 0.2

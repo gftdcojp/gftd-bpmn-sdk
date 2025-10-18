@@ -5,7 +5,6 @@ export { BpmnValidator, validateProcess } from './bpmn-validator';
 export type {
   ValidationResult,
   ValidationError,
-  ValidationWarning,
   ValidationErrorType,
   ValidationStatistics,
   ValidationOptions,

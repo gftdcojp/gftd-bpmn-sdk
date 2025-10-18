@@ -30,7 +30,7 @@ describe('Property-based Testing Integration', () => {
   });
 
   test('should test noDeadEnds property', async () => {
-    const result = await bpmnPropertyTest(runtime, testProcess, 'noDeadEnds', {
+    const result = await bpmnPropertyTest(testProcess, runtime, 'noDeadEnds', {
       maxTestCases: 5,
       timeout: 2000
     });
@@ -45,7 +45,7 @@ describe('Property-based Testing Integration', () => {
   });
 
   test('should test allReachable property', async () => {
-    const result = await bpmnPropertyTest(runtime, testProcess, 'allReachable', {
+    const result = await bpmnPropertyTest(testProcess, runtime, 'allReachable', {
       maxTestCases: 5,
       timeout: 2000
     });
@@ -56,7 +56,7 @@ describe('Property-based Testing Integration', () => {
   });
 
   test('should test gatewayConsistency property', async () => {
-    const result = await bpmnPropertyTest(runtime, testProcess, 'gatewayConsistency', {
+    const result = await bpmnPropertyTest(testProcess, runtime, 'gatewayConsistency', {
       maxTestCases: 5,
       timeout: 2000
     });
@@ -65,7 +65,7 @@ describe('Property-based Testing Integration', () => {
   });
 
   test('should test properTermination property', async () => {
-    const result = await bpmnPropertyTest(runtime, testProcess, 'properTermination', {
+    const result = await bpmnPropertyTest(testProcess, runtime, 'properTermination', {
       maxTestCases: 5,
       timeout: 2000
     });
@@ -74,7 +74,7 @@ describe('Property-based Testing Integration', () => {
   });
 
   test('should test validExecution property', async () => {
-    const result = await bpmnPropertyTest(runtime, testProcess, 'validExecution', {
+    const result = await bpmnPropertyTest(testProcess, runtime, 'validExecution', {
       maxTestCases: 3,
       timeout: 3000
     });
@@ -86,7 +86,7 @@ describe('Property-based Testing Integration', () => {
 
   test('should handle invalid property name', async () => {
     await expect(
-      bpmnPropertyTest(runtime, testProcess, 'invalidProperty' as any, {
+      bpmnPropertyTest(testProcess, runtime, 'invalidProperty' as any, {
         maxTestCases: 1
       })
     ).rejects.toThrow();
@@ -155,7 +155,7 @@ describe('Property-based Testing Integration', () => {
   });
 
   test('should provide meaningful coverage information', async () => {
-    const result = await bpmnPropertyTest(runtime, testProcess, 'noDeadEnds', {
+    const result = await bpmnPropertyTest(testProcess, runtime, 'noDeadEnds', {
       maxTestCases: 3
     });
 

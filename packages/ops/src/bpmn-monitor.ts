@@ -1,7 +1,8 @@
 // Merkle DAG: bpmn_monitor
 // BPMN Process Monitor with OpenTelemetry Integration
 
-import { trace, metrics, logs, Span, Meter, Logger } from '@opentelemetry/api';
+import { trace, metrics, Span, Meter } from '@opentelemetry/api';
+import { logs, Logger } from '@opentelemetry/api-logs';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
@@ -13,16 +14,17 @@ import type {
   TraceSpan,
   LogEntry,
   Alert,
+  AlertSeverity,
   HealthStatus,
   PerformanceSnapshot,
 } from './types';
 
 export class BpmnMonitor {
   private config: MonitoringConfig;
-  private sdk: NodeSDK;
+  private sdk!: NodeSDK;
   private tracer = trace.getTracer('bpmn-monitor', '1.0.0');
-  private meter: Meter;
-  private logger: Logger;
+  private meter!: Meter;
+  private logger!: Logger;
 
   // メトリクス
   private instanceCounter: any;
@@ -48,7 +50,6 @@ export class BpmnMonitor {
   private initializeOpenTelemetry(): void {
     const jaegerExporter = new JaegerExporter({
       endpoint: this.config.otel.endpoint || 'http://localhost:14268/api/traces',
-      headers: this.config.otel.headers,
     });
 
     const prometheusExporter = new PrometheusExporter({
@@ -57,9 +58,7 @@ export class BpmnMonitor {
 
     this.sdk = new NodeSDK({
       serviceName: this.config.otel.serviceName || this.config.serviceName,
-      serviceVersion: this.config.otel.serviceVersion || '1.0.0',
       traceExporter: jaegerExporter,
-      metricExporter: prometheusExporter,
     });
 
     this.sdk.start();

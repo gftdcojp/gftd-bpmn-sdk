@@ -104,6 +104,55 @@ importers:
         specifier: ^5.0.0
         version: 5.9.3
 
+  examples/order-processing:
+    dependencies:
+      '@gftd/bpmn-sdk/compiler':
+        specifier: workspace:*
+        version: link:../../packages/compiler
+      '@gftd/bpmn-sdk/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@gftd/bpmn-sdk/dsl':
+        specifier: workspace:*
+        version: link:../../packages/dsl
+      '@gftd/bpmn-sdk/human':
+        specifier: workspace:*
+        version: link:../../packages/human
+      '@gftd/bpmn-sdk/ops':
+        specifier: workspace:*
+        version: link:../../packages/ops
+      '@gftd/bpmn-sdk/runtime':
+        specifier: workspace:*
+        version: link:../../packages/runtime
+      '@gftd/bpmn-sdk/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      '@gftd/bpmn-sdk/validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
+      '@types/jest':
+        specifier: ^29.5.0
+        version: 29.5.14
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.22
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.19.22)(ts-node@10.9.2(@types/node@20.19.22)(typescript@5.9.3))
+      ts-jest:
+        specifier: ^29.1.0
+        version: 29.4.5(@babel/core@7.28.4)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.4))(jest-util@29.7.0)(jest@29.7.0(@types/node@20.19.22)(ts-node@10.9.2(@types/node@20.19.22)(typescript@5.9.3)))(typescript@5.9.3)
+      ts-node:
+        specifier: ^10.9.0
+        version: 10.9.2(@types/node@20.19.22)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
   packages/compiler:
     dependencies:
       '@gftd/bpmn-sdk/core':
@@ -191,6 +240,9 @@ importers:
       '@opentelemetry/api':
         specifier: ^1.8.0
         version: 1.9.0
+      '@opentelemetry/api-logs':
+        specifier: ^0.52.1
+        version: 0.52.1
       '@opentelemetry/auto-instrumentations-node':
         specifier: ^0.52.1
         version: 0.52.1(@opentelemetry/api@1.9.0)

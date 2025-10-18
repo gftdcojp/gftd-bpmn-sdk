@@ -4,7 +4,7 @@
 export interface ValidationResult {
   valid: boolean;
   errors: ValidationError[];
-  warnings: ValidationWarning[];
+  warnings: ValidationError[];
   statistics: ValidationStatistics;
 }
 
@@ -19,10 +19,6 @@ export interface ValidationError {
     column?: number;
   };
   suggestion?: string;
-}
-
-export interface ValidationWarning extends ValidationError {
-  severity: 'warning';
 }
 
 export type ValidationErrorType =

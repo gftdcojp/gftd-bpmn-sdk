@@ -13,7 +13,7 @@ describe('Static Validation Integration', () => {
         .sequenceFlow('StartEvent', 'UserTask1')
         .sequenceFlow('UserTask1', 'EndEvent')
       )
-    );
+    ).process
 
     const result = await validateProcess(validProcess);
 
@@ -34,7 +34,7 @@ describe('Static Validation Integration', () => {
         .sequenceFlow('ReachableTask', 'EndEvent')
         // UnreachableTask is not connected
       )
-    );
+    ).process
 
     const result = await validateProcess(processWithUnreachable);
 

@@ -51,13 +51,15 @@ export class BpmnPropertyTester {
 
     try {
       // プロセスをデプロイ
-      const { runtime, context } = await this.runtime.deployProcess(ir);
-      if (!context) {
-        throw new Error('Failed to deploy process');
-      }
+      const deployedProcessId = await this.runtime.deployProcess(ir);
+
+      // インスタンスを開始
+      const context = await this.runtime.startInstance(deployedProcessId, {
+        variables: scenario.inputs
+      });
 
       // シナリオ実行
-      const trace = await this.executeScenario(runtime, context, scenario, opts.timeout);
+      const trace = await this.executeScenario(this.runtime, context, scenario, opts.timeout);
 
       // 結果検証
       const success = this.validateScenarioResult(scenario, trace);
@@ -211,8 +213,8 @@ export class BpmnPropertyTester {
           generator: () => this.generateProcessInput(),
           property: async (input) => {
             try {
-              const { runtime, context } = await this.runtime.deployProcess(input);
-              return context !== undefined;
+              const deployedProcessId = await this.runtime.deployProcess(input);
+              return deployedProcessId !== undefined;
             } catch {
               return false;
             }
@@ -246,13 +248,13 @@ export class BpmnPropertyTester {
     runtime.onEvent((event) => {
       trace.events.push({
         type: event.type,
-        elementId: event.activityId || event.elementId || '',
+        elementId: (event as any).activityId || (event as any).elementId || '',
         timestamp: new Date(),
         data: event,
       });
 
-      if (event.activityId) {
-        trace.path.push(event.activityId);
+      if ((event as any).activityId) {
+        trace.path.push((event as any).activityId);
       }
     });
 

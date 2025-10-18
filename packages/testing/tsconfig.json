@@ -9,7 +9,8 @@
     "declaration": true,
     "declarationMap": true,
     "module": "CommonJS",
-    "target": "ES2022"
+    "target": "ES2022",
+    "moduleResolution": "node"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],

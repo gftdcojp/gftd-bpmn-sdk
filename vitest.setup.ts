@@ -68,20 +68,47 @@ vi.mock('bpmn-moddle', () => ({
 }));
 
 vi.mock('moddle-xml', () => ({
-  toXML: vi.fn().mockResolvedValue('<xml>test</xml>'),
-  fromXML: vi.fn().mockResolvedValue({}),
+  toXML: vi.fn().mockImplementation((obj, options) => Promise.resolve({ xml: '<xml>test</xml>' })),
+  fromXML: vi.fn().mockResolvedValue({
+    root: {
+      $type: 'bpmn:Definitions',
+      id: 'Definitions_1',
+      name: 'Test Definitions',
+      targetNamespace: 'http://www.gftd.co.jp/bpmn',
+      rootElements: [
+        {
+          $type: 'bpmn:Process',
+          id: 'Process_1',
+          isExecutable: true,
+          flowElements: [],
+        },
+      ],
+      version: '1.0',
+    },
+  }),
 }));
 
 // Global test utilities
 global.testUtils = {
   createMockProcess: () => ({
     id: 'test-process',
+    isExecutable: true,
+    flowElements: [],
+    sequenceFlows: [],
+  }),
+
+  createMockBpmnIR: () => ({
     definitions: {
+      id: 'Definitions_1',
+      name: 'Test Definitions',
+      targetNamespace: 'http://www.gftd.co.jp/bpmn',
       processes: [{
         id: 'test-process',
+        isExecutable: true,
         flowElements: [],
         sequenceFlows: [],
       }],
+      version: '1.0',
     },
   }),
 

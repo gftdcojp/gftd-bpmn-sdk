@@ -184,13 +184,13 @@ describe('@gftd/bpmn-sdk/ops', () => {
           serviceName: 'test-service',
           alerts: {
             enabled: true,
-            thresholds: {
-              maxProcessInstances: 50,
-              maxActiveTasks: 25,
-              maxErrorRate: 0.2,
-              maxAverageDuration: 60000,
-              slaBreachRate: 0.1
-            }
+        thresholds: {
+          maxProcessInstances: 50,
+          maxActiveTasks: 25,
+          maxErrorRate: 0.2,
+          maxAverageDuration: 60000,
+          slaBreachRate: 0.1,
+        }
           }
         });
 

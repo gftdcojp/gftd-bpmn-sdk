@@ -11,6 +11,7 @@ export interface HumanTask {
   priority?: number;
   dueDate?: Date;
   assignee?: string;
+  claimedBy?: string;
   candidateUsers?: string[];
   candidateGroups?: string[];
   status: TaskStatus;
@@ -18,6 +19,7 @@ export interface HumanTask {
   claimedAt?: Date;
   completedAt?: Date;
   variables?: Record<string, any>;
+  outcome?: Record<string, any>;
   formKey?: string;
   formData?: Record<string, any>;
   comments?: TaskComment[];
@@ -69,6 +71,8 @@ export interface TaskSLA {
   endTime?: Date;
   breached: boolean;
   breachedAt?: Date;
+  breachTime?: Date;
+  warningTime?: Date;
   warningThreshold?: number; // パーセント
   escalationActions?: EscalationAction[];
 }
@@ -107,6 +111,8 @@ export interface TaskEvent {
   userId?: string;
   timestamp: Date;
   data?: any;
+  oldAssignee?: string;
+  newAssignee?: string;
 }
 
 export type TaskEventType =
@@ -114,6 +120,7 @@ export type TaskEventType =
   | 'task.assigned'
   | 'task.claimed'
   | 'task.unclaimed'
+  | 'task.reassigned'
   | 'task.completed'
   | 'task.failed'
   | 'task.suspended'

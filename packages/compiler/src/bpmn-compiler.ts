@@ -19,10 +19,11 @@ import type {
 
 // BPMN Compiler - Converts IR to BPMN 2.0 XML
 export class BpmnCompiler {
-  private moddle: BpmnModdle;
+  // TODO: Implement full moddle integration
+  // private moddle: any;
 
   constructor() {
-    this.moddle = new BpmnModdle();
+    // this.moddle = new BpmnModdle();
   }
 
   /**

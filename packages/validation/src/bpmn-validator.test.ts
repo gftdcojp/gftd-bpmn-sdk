@@ -16,10 +16,12 @@ describe('@gftd/bpmn-sdk/validation', () => {
 
     describe('validateProcess()', () => {
       it('should validate a valid process', async () => {
-        const validProcess = {
-          id: 'ValidProcess',
-          isExecutable: true,
-          flowElements: [
+      const validProcess = {
+        definitions: {
+          processes: [{
+            id: 'ValidProcess',
+            isExecutable: true,
+            flowElements: [
             { id: 'StartEvent', type: 'event', eventType: 'start' },
             { id: 'UserTask', type: 'task', taskType: 'user' },
             { id: 'EndEvent', type: 'event', eventType: 'end' }
@@ -28,7 +30,8 @@ describe('@gftd/bpmn-sdk/validation', () => {
             { id: 'Flow1', sourceRef: 'StartEvent', targetRef: 'UserTask' },
             { id: 'Flow2', sourceRef: 'UserTask', targetRef: 'EndEvent' }
           ]
-        };
+        }
+      };
 
         const result = await validator.validateProcess(validProcess);
 

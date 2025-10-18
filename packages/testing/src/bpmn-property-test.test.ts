@@ -252,7 +252,7 @@ describe('@gftd/bpmn-sdk/testing', () => {
         expectedOutputs: {}
       };
 
-      const result = await bpmnScenarioTest(processIR as any, runtime, scenario);
+        const result = await bpmnScenarioTest(processIR as any, runtime, scenario, { maxTestCases: 1 });
 
       expect(result).toBeDefined();
       expect(result.scenario.id).toBe(scenario.id);

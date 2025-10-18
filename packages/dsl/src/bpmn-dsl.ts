@@ -92,10 +92,11 @@ export class DslContext {
 }
 
 // Flow Builder - メインエントリーポイント
-export function flow(name: string, builder: (f: FlowBuilder) => FlowBuilderResult): BpmnIR {
+export function flow(name: string, builder: (f: FlowBuilder) => void): BpmnIR {
   const context = new DslContext();
   const flowBuilder = new FlowBuilder(context, name);
-  const result = builder(flowBuilder);
+  builder(flowBuilder);
+  const result = flowBuilder.build();
 
   return {
     definitions: {
@@ -130,6 +131,7 @@ export class FlowBuilder {
   private processName: string;
   private elements: any[] = [];
   private laneSets: LaneSetIR[] = [];
+  private _processBuilder?: ProcessBuilder;
 
   constructor(context: DslContext, processName: string) {
     this.context = context;
@@ -137,14 +139,57 @@ export class FlowBuilder {
   }
 
   // Process configuration
-  process(config: { id?: string; isExecutable?: boolean } = {}): ProcessBuilder {
+  process(idOrConfig?: string | { id?: string; isExecutable?: boolean }, callback?: (builder: ProcessBuilder) => void): void;
+  process(callback: (builder: ProcessBuilder) => void): void;
+  process(idOrConfig?: string | { id?: string; isExecutable?: boolean } | ((builder: ProcessBuilder) => void), callback?: (builder: ProcessBuilder) => void): void {
+    let config: { id?: string; isExecutable?: boolean } = {};
+    let actualCallback: (builder: ProcessBuilder) => void;
+
+    if (typeof idOrConfig === 'function') {
+      // process(callback)
+      actualCallback = idOrConfig;
+    } else if (typeof idOrConfig === 'string') {
+      // process(id, callback)
+      config.id = idOrConfig;
+      actualCallback = callback!;
+    } else if (idOrConfig && typeof idOrConfig === 'object') {
+      // process(config, callback)
+      config = idOrConfig;
+      actualCallback = callback!;
+    } else {
+      throw new Error('Invalid arguments for process method');
+    }
+
     const processId = config.id || this.context.generateId('Process');
-    return new ProcessBuilder(this.context, processId, this.processName, config.isExecutable ?? true);
+    const processBuilder = new ProcessBuilder(this.context, processId, this.processName, config.isExecutable ?? true);
+    // Store reference to the process builder for building
+    this._processBuilder = processBuilder;
+
+    // Call the callback with the process builder if provided
+    if (actualCallback) {
+      actualCallback(processBuilder);
+    }
   }
 
   // Collaboration (multi-pool)
   collaboration(name: string): CollaborationBuilder {
     return new CollaborationBuilder(this.context, name);
+  }
+
+  // Build the flow
+  build(): FlowBuilderResult {
+    if (this._processBuilder) {
+      return this._processBuilder.build();
+    }
+    return {
+      process: {
+        id: this.processName,
+        isExecutable: true,
+        flowElements: this.context.getElements(),
+        sequenceFlows: this.context.getSequenceFlows(),
+        laneSets: this.laneSets.length > 0 ? this.laneSets : undefined,
+      }
+    };
   }
 }
 

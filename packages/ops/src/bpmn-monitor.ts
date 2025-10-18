@@ -38,7 +38,10 @@ export class BpmnMonitor {
   private alerts: Alert[] = [];
 
   constructor(config: MonitoringConfig) {
-    this.config = config;
+    this.config = {
+      ...config,
+      otel: config.otel || { endpoint: 'http://localhost:14268/api/traces' }
+    };
     this.initializeOpenTelemetry();
     this.initializeMetrics();
     this.initializeLogger();

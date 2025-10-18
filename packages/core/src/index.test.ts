@@ -12,3 +12,4 @@ describe('@gftd/bpmn-sdk/core', () => {
     expect(true).toBe(true);
   });
 });
+

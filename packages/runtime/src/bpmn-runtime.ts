@@ -33,6 +33,8 @@ export type RuntimeEvent =
 export class BpmnRuntime {
   private engines = new Map<string, any>();
   private eventListeners = new Set<(event: RuntimeEvent) => void>();
+  private processes = new Map<string, any>();
+  private instances = new Map<string, Map<string, any>>();
 
   /**
    * Deploy BPMN process from IR
@@ -48,6 +50,7 @@ export class BpmnRuntime {
     // Simplified engine creation
     const engine = Engine({ source: xml });
     this.engines.set(targetProcessId, engine);
+    this.processes.set(targetProcessId, ir.definitions.processes[0]);
 
     this.emitEvent({
       type: 'start',
@@ -93,6 +96,17 @@ export class BpmnRuntime {
       endTime: new Date(),
     };
 
+    // Store instance
+    if (!this.instances.has(processId)) {
+      this.instances.set(processId, new Map());
+    }
+    this.instances.get(processId)!.set(instanceId, {
+      variables,
+      status: 'completed',
+      currentActivities: [],
+      startTime: context.startTime,
+    });
+
     // Emit completion event
     this.emitEvent({
       type: 'end',
@@ -113,6 +127,17 @@ export class BpmnRuntime {
     signalId: string,
     payload?: any
   ): Promise<void> {
+    // Check if process exists
+    if (!this.processes.has(processId)) {
+      throw new Error(`Process ${processId} not found`);
+    }
+
+    // Check if instance exists
+    const instances = this.instances.get(processId);
+    if (!instances || !instances.has(instanceId)) {
+      throw new Error(`Instance ${instanceId} not found for process ${processId}`);
+    }
+
     // Placeholder implementation
     console.log(`Signal ${signalId} sent to ${processId}:${instanceId}`);
     this.emitEvent({

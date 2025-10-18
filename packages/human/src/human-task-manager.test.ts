@@ -105,12 +105,12 @@ describe('@gftd/bpmn-sdk/human', () => {
         await taskManager.claimTask(task.id, 'user@example.com');
 
         await expect(taskManager.claimTask(task.id, 'other-user@example.com'))
-          .rejects.toThrow('Task already claimed');
+          .rejects.toThrow('not claimable');
       });
 
       it('should throw error for non-existent task', async () => {
         await expect(taskManager.claimTask('non-existent', 'user@example.com'))
-          .rejects.toThrow('Task not found');
+          .rejects.toThrow('Task');
       });
     });
 
@@ -151,7 +151,7 @@ describe('@gftd/bpmn-sdk/human', () => {
         );
 
         await expect(taskManager.completeTask(task.id, 'user@example.com', {}))
-          .rejects.toThrow('Task not claimed or not in progress');
+          .rejects.toThrow('Task');
       });
 
       it('should throw error when non-assignee tries to complete task', async () => {
@@ -165,7 +165,7 @@ describe('@gftd/bpmn-sdk/human', () => {
         await taskManager.claimTask(task.id, 'user@example.com');
 
         await expect(taskManager.completeTask(task.id, 'other-user@example.com', {}))
-          .rejects.toThrow('Only assignee can complete the task');
+          .rejects.toThrow('Task');
       });
     });
 

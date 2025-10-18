@@ -1,7 +1,7 @@
 // Merkle DAG: human_task_manager
 // Human Task Manager - ユーザー割り当てとタスク管理
 
-import type { BpmnRuntime, ExecutionContext } from '@gftd/bpmn-sdk/runtime';
+import type { BpmnRuntime, ExecutionContext, RuntimeEvent } from '@gftd/bpmn-sdk/runtime';
 import type {
   HumanTask,
   TaskStatus,
@@ -135,6 +135,7 @@ export class HumanTaskManager {
     const now = new Date();
     task.status = 'in_progress';
     task.assignee = userId;
+    task.claimedBy = userId;
     task.claimedAt = now;
 
     const assignment: TaskAssignment = {
@@ -211,6 +212,7 @@ export class HumanTaskManager {
     const now = new Date();
     task.status = 'completed';
     task.completedAt = now;
+    task.outcome = variables;
     task.variables = { ...task.variables, ...variables };
 
     // プロセスを再開
@@ -270,11 +272,16 @@ export class HumanTaskManager {
     const sla = this.slas.get(taskId);
     if (!sla) return;
 
-    const checkTime = new Date(sla.startTime.getTime() + sla.slaDefinition.duration);
+    const breachTime = new Date(sla.startTime.getTime() + sla.slaDefinition.duration);
+    sla.breachTime = breachTime;
+
+    // Warning time (e.g., 80% of duration)
+    const warningDuration = sla.slaDefinition.duration * 0.8;
+    sla.warningTime = new Date(sla.startTime.getTime() + warningDuration);
 
     setTimeout(() => {
       this.checkSLABreach(taskId);
-    }, checkTime.getTime() - Date.now());
+    }, breachTime.getTime() - Date.now());
   }
 
   private checkSLABreach(taskId: string): void {
@@ -327,7 +334,7 @@ export class HumanTaskManager {
 
   private setupRuntimeListeners(): void {
     // BPMNランタイムからのイベントを監視
-    this.runtime.onEvent((event) => {
+    this.runtime.onEvent((event: RuntimeEvent) => {
       if (event.type === 'activity.wait' && event.activityType === 'userTask') {
         // User Taskが待機状態になったら、人手タスクを作成
         this.createTask(

@@ -25,7 +25,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "composite": true
+    "composite": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]

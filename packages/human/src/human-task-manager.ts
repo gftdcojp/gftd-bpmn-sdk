@@ -402,6 +402,8 @@ export class HumanTaskManager {
     this.emitEvent({
       type: 'task.reassigned',
       taskId,
+      processId: task.processId,
+      instanceId: task.instanceId,
       oldAssignee,
       newAssignee,
       timestamp: new Date(),

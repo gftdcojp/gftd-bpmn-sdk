@@ -28,9 +28,5 @@
     "composite": false
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
-  "references": [
-    { "path": "../core" },
-    { "path": "../compiler" }
-  ]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

@@ -1,6 +1,5 @@
 import type { BpmnIR } from '@gftd/bpmn-sdk/core';
 export declare class BpmnCompiler {
-    private moddle;
     constructor();
     /**
      * Compile BPMN IR to BPMN 2.0 XML string

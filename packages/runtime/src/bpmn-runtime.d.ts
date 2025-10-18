@@ -71,6 +71,8 @@ export type RuntimeEvent = {
 export declare class BpmnRuntime {
     private engines;
     private eventListeners;
+    private processes;
+    private instances;
     /**
      * Deploy BPMN process from IR
      */

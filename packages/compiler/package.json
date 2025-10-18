@@ -2,13 +2,15 @@
   "name": "@gftd/bpmn-sdk/compiler",
   "version": "0.1.0",
   "description": "BPMN 2.0 IR to XML compiler using bpmn-moddle",
+  "type": "module",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "scripts": {

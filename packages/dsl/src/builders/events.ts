@@ -2,14 +2,14 @@
 // DSL Event Builders - Start/End/Intermediate/Boundary Events
 
 import type { EventIR, EventDefinitionIR } from '@gftd/bpmn-sdk/core';
-import type { DslContext } from '../bpmn-dsl';
+import type { DslContext, MutableEventIR } from '../bpmn-dsl';
 
 // Base Event Builder
 export class BaseEventBuilder {
   protected context: DslContext;
-  protected event: EventIR;
+  protected event: MutableEventIR;
 
-  constructor(context: DslContext, event: EventIR) {
+  constructor(context: DslContext, event: MutableEventIR) {
     this.context = context;
     this.event = event;
   }
@@ -139,12 +139,14 @@ export class IntermediateCatchEventBuilder extends BaseEventBuilder {
 // Boundary Event Builder
 export class BoundaryEventBuilder extends BaseEventBuilder {
   nonInterrupting(): this {
-    this.event.cancelActivity = false;
+    // Mutable cast for building
+    (this.event as any).cancelActivity = false;
     return this;
   }
 
   interrupting(): this {
-    this.event.cancelActivity = true;
+    // Mutable cast for building
+    (this.event as any).cancelActivity = true;
     return this;
   }
 }

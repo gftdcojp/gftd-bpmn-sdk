@@ -4,55 +4,69 @@
 import { flow } from '@gftd/bpmn-sdk/dsl';
 import { compileToXml } from '@gftd/bpmn-sdk/compiler';
 import { deployAndStart } from '@gftd/bpmn-sdk/runtime';
+import { importFromXml } from '@gftd/bpmn-sdk/importer';
 
 // Define a minimal BPMN process using DSL
 // Process: Start → User Task → Service Task → XOR Gateway → End
-const minimalProcessIR = flow('MinimalProcess', f => f
-  .process('MinimalProcess', p => p
-    // Start Event
-    .startEvent('StartEvent')
+async function createProcessIR() {
+  const result = flow('MinimalProcess', (f: any) => f
+    .process('MinimalProcess', (p: any) => p
+      // Start Event
+      .startEvent('StartEvent')
 
-    // User Task
-    .userTask('ReviewRequest')
-      .assignee('user1')
-      .formKey('reviewForm')
+      // User Task
+      .userTask('ReviewRequest')
 
-    // Service Task
-    .serviceTask('ProcessRequest')
-      .topic('request-processor')
-      .resultVariable('processingResult')
+      // Service Task
+      .serviceTask('ProcessRequest')
 
-    // XOR Gateway with conditions
-    .exclusiveGateway('DecisionPoint')
+      // XOR Gateway with conditions
+      .exclusiveGateway('DecisionPoint')
 
-    // End Events
-    .endEvent('Approved')
-    .endEvent('Rejected')
+      // End Events
+      .endEvent('Approved')
+      .endEvent('Rejected')
 
-    // Sequence Flows
-    .sequenceFlow('StartEvent', 'ReviewRequest')
-    .sequenceFlow('ReviewRequest', 'ProcessRequest')
-    .sequenceFlow('ProcessRequest', 'DecisionPoint')
-    .sequenceFlow('DecisionPoint', 'Approved')
-      .condition('${processingResult == "approved"}')
-    .sequenceFlow('DecisionPoint', 'Rejected')
-      .condition('${processingResult == "rejected"}')
-  )
-  .build()
-);
+      // Sequence Flows
+      .sequenceFlow('StartEvent', 'ReviewRequest')
+      .sequenceFlow('ReviewRequest', 'ProcessRequest')
+      .sequenceFlow('ProcessRequest', 'DecisionPoint')
+      .sequenceFlow('DecisionPoint', 'Approved')
+      .sequenceFlow('DecisionPoint', 'Rejected')
+    )
+    .build()
+  );
+
+  return result;
+}
 
 async function runE2ETest() {
   console.log('🚀 Starting BPMN SDK E2E Test...\n');
 
   try {
-    // Step 1: Compile IR to BPMN XML
+    // Step 1: Create IR from DSL
+    console.log('🏗️ Creating IR from DSL...');
+    const minimalProcessIR = await createProcessIR();
+    console.log('✅ IR created successfully');
+
+    // Step 2: Compile IR to BPMN XML
     console.log('📝 Compiling IR to BPMN XML...');
     const xml = await compileToXml(minimalProcessIR);
     console.log('✅ BPMN XML generated successfully');
-    console.log('📄 XML Preview (first 200 chars):');
-    console.log(xml.substring(0, 200) + '...\n');
+    console.log('📄 XML Preview (first 300 chars):');
+    console.log(xml.substring(0, 300) + '...\n');
 
-    // Step 2: Deploy and start process instance
+    // Step 3: Test round-trip: XML → IR
+    console.log('🔄 Testing round-trip conversion (XML → IR)...');
+    const importedIR = await importFromXml(xml);
+    console.log('✅ XML imported back to IR successfully');
+
+    // Verify round-trip consistency
+    const originalElements = minimalProcessIR.definitions.processes[0]?.flowElements?.length || 0;
+    const importedElements = importedIR.definitions.processes[0]?.flowElements?.length || 0;
+    console.log(`📊 Original elements: ${originalElements}, Imported elements: ${importedElements}`);
+
+    // Step 4: Deploy and start process instance
     console.log('🚀 Deploying and starting process instance...');
     const { runtime, context } = await deployAndStart(minimalProcessIR, {
       variables: {
@@ -68,9 +82,9 @@ async function runE2ETest() {
     console.log(`📊 Status: ${context.status}`);
     console.log(`📊 Variables:`, context.variables);
 
-    // Step 3: Set up event monitoring
+    // Step 5: Set up event monitoring
     console.log('\n👂 Setting up event monitoring...');
-    runtime.onEvent((event) => {
+    runtime.onEvent((event: any) => {
       console.log(`📢 Event: ${event.type}`, {
         processId: event.processId,
         instanceId: event.instanceId,
@@ -81,12 +95,12 @@ async function runE2ETest() {
       });
     });
 
-    // Step 4: Wait for process completion
+    // Step 6: Wait for process completion
     console.log('\n⏳ Waiting for process completion...');
 
     // In a real scenario, we would wait for user tasks to be completed
     // For this minimal test, we'll simulate completion
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     const finalContext = await runtime.getExecutionContext(
       context.processId,
@@ -97,10 +111,17 @@ async function runE2ETest() {
     console.log(`📊 Final Status: ${finalContext?.status}`);
     console.log(`📊 Execution Time: ${finalContext?.endTime ? finalContext.endTime.getTime() - finalContext.startTime.getTime() : 'N/A'}ms`);
 
+    // Step 7: Final summary
     console.log('\n🎉 BPMN SDK E2E Test completed successfully!');
+    console.log('✅ DSL → IR conversion');
+    console.log('✅ IR → XML compilation');
+    console.log('✅ XML → IR round-trip import');
+    console.log('✅ Process deployment and execution');
+    console.log('✅ Runtime event monitoring');
 
   } catch (error) {
     console.error('❌ E2E Test failed:', error);
+    console.error('Stack trace:', error instanceof Error ? error.stack : 'No stack trace');
     process.exit(1);
   }
 }

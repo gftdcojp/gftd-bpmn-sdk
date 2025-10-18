@@ -87,6 +87,25 @@ importers:
         specifier: ^5.0.0
         version: 5.9.3
 
+  packages/importer:
+    dependencies:
+      '@gftd/bpmn-sdk/core':
+        specifier: workspace:*
+        version: link:../core
+      bpmn-moddle:
+        specifier: ^8.1.0
+        version: 8.1.0
+      moddle-xml:
+        specifier: ^9.0.5
+        version: 9.0.6
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.22
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
   packages/runtime:
     dependencies:
       '@gftd/bpmn-sdk/compiler':

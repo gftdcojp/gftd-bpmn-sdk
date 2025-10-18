@@ -1,15 +1,16 @@
 // Merkle DAG: dsl_subprocess_builders
 // DSL SubProcess Builders - Embedded/Event/Transaction/AdHoc
 
-import type { SubProcessIR } from '@gftd/bpmn-sdk/core';
-import type { DslContext, ProcessBuilder } from '../bpmn-dsl';
+import type { SubProcessIR, LaneSetIR } from '@gftd/bpmn-sdk/core';
+import { ProcessBuilder } from '../bpmn-dsl';
+import type { DslContext, MutableSubProcessIR } from '../bpmn-dsl';
 
 // Base SubProcess Builder
 export class BaseSubprocessBuilder {
   protected context: DslContext;
-  protected subProcess: SubProcessIR;
+  protected subProcess: MutableSubProcessIR;
 
-  constructor(context: DslContext, subProcess: SubProcessIR) {
+  constructor(context: DslContext, subProcess: MutableSubProcessIR) {
     this.context = context;
     this.subProcess = subProcess;
   }
@@ -39,24 +40,24 @@ export class EmbeddedSubprocessBuilder extends BaseSubprocessBuilder {
 export class EventSubprocessBuilder extends BaseSubprocessBuilder {
   constructor(context: DslContext, subProcess: SubProcessIR) {
     super(context, subProcess);
-    this.subProcess.triggeredByEvent = true;
+    (this.subProcess as any).triggeredByEvent = true;
   }
 }
 
 // Transaction SubProcess Builder
 export class TransactionSubprocessBuilder extends BaseSubprocessBuilder {
   compensate(): this {
-    this.subProcess.method = '##compensate';
+    (this.subProcess as any).method = '##compensate';
     return this;
   }
 
   image(): this {
-    this.subProcess.method = '##image';
+    (this.subProcess as any).method = '##image';
     return this;
   }
 
   store(): this {
-    this.subProcess.method = '##store';
+    (this.subProcess as any).method = '##store';
     return this;
   }
 }
@@ -64,22 +65,22 @@ export class TransactionSubprocessBuilder extends BaseSubprocessBuilder {
 // Ad-hoc SubProcess Builder
 export class AdHocSubprocessBuilder extends BaseSubprocessBuilder {
   completionCondition(condition: string): this {
-    this.subProcess.completionCondition = condition;
+    (this.subProcess as any).completionCondition = condition;
     return this;
   }
 
   parallel(): this {
-    this.subProcess.ordering = 'Parallel';
+    (this.subProcess as any).ordering = 'Parallel';
     return this;
   }
 
   sequential(): this {
-    this.subProcess.ordering = 'Sequential';
+    (this.subProcess as any).ordering = 'Sequential';
     return this;
   }
 
   cancelRemainingInstances(cancel: boolean = true): this {
-    this.subProcess.cancelRemainingInstances = cancel;
+    (this.subProcess as any).cancelRemainingInstances = cancel;
     return this;
   }
 }
@@ -87,9 +88,9 @@ export class AdHocSubprocessBuilder extends BaseSubprocessBuilder {
 // Lane Set Builder
 export class LaneSetBuilder {
   private context: DslContext;
-  private laneSet: any;
+  private laneSet: LaneSetIR;
 
-  constructor(context: DslContext, laneSet: any) {
+  constructor(context: DslContext, laneSet: LaneSetIR) {
     this.context = context;
     this.laneSet = laneSet;
   }

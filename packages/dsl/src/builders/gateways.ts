@@ -2,20 +2,20 @@
 // DSL Gateway Builders - Exclusive/Inclusive/Parallel/EventBased/Complex
 
 import type { GatewayIR, SequenceFlowIR } from '@gftd/bpmn-sdk/core';
-import type { DslContext } from '../bpmn-dsl';
+import type { DslContext, MutableGatewayIR, MutableSequenceFlowIR } from '../bpmn-dsl';
 
 // Base Gateway Builder
 export class BaseGatewayBuilder {
   protected context: DslContext;
-  protected gateway: GatewayIR;
+  protected gateway: MutableGatewayIR;
 
-  constructor(context: DslContext, gateway: GatewayIR) {
+  constructor(context: DslContext, gateway: MutableGatewayIR) {
     this.context = context;
     this.gateway = gateway;
   }
 
   default(flowId: string): this {
-    this.gateway.default = flowId;
+    (this.gateway as any).default = flowId;
     return this;
   }
 }
@@ -38,17 +38,17 @@ export class ParallelGatewayBuilder extends BaseGatewayBuilder {
 // Event-based Gateway Builder
 export class EventBasedGatewayBuilder extends BaseGatewayBuilder {
   instantiate(instantiate: boolean = true): this {
-    this.gateway.instantiate = instantiate;
+    (this.gateway as any).instantiate = instantiate;
     return this;
   }
 
   exclusive(): this {
-    this.gateway.eventGatewayType = 'Exclusive';
+    (this.gateway as any).eventGatewayType = 'Exclusive';
     return this;
   }
 
   parallel(): this {
-    this.gateway.eventGatewayType = 'Parallel';
+    (this.gateway as any).eventGatewayType = 'Parallel';
     return this;
   }
 }
@@ -56,7 +56,7 @@ export class EventBasedGatewayBuilder extends BaseGatewayBuilder {
 // Complex Gateway Builder
 export class ComplexGatewayBuilder extends BaseGatewayBuilder {
   activationCondition(condition: string): this {
-    this.gateway.activationCondition = condition;
+    (this.gateway as any).activationCondition = condition;
     return this;
   }
 }
@@ -64,20 +64,20 @@ export class ComplexGatewayBuilder extends BaseGatewayBuilder {
 // Sequence Flow Builder for conditional flows
 export class SequenceFlowBuilder {
   private context: DslContext;
-  private flow: SequenceFlowIR;
+  private flow: MutableSequenceFlowIR;
 
-  constructor(context: DslContext, flow: SequenceFlowIR) {
+  constructor(context: DslContext, flow: MutableSequenceFlowIR) {
     this.context = context;
     this.flow = flow;
   }
 
   condition(expression: string): this {
-    this.flow.conditionExpression = expression;
+    (this.flow as any).conditionExpression = expression;
     return this;
   }
 
   immediate(immediate: boolean = true): this {
-    this.flow.isImmediate = immediate;
+    (this.flow as any).isImmediate = immediate;
     return this;
   }
 }

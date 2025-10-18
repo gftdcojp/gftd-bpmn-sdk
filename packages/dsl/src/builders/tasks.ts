@@ -2,14 +2,14 @@
 // DSL Task Builders - Service/User/Manual/Script/BusinessRule/Send/Receive/CallActivity
 
 import type { TaskIR } from '@gftd/bpmn-sdk/core';
-import type { DslContext } from '../bpmn-dsl';
+import type { DslContext, MutableTaskIR } from '../bpmn-dsl';
 
 // Base Task Builder
 export class BaseTaskBuilder {
   protected context: DslContext;
-  protected task: TaskIR;
+  protected task: MutableTaskIR;
 
-  constructor(context: DslContext, task: TaskIR) {
+  constructor(context: DslContext, task: MutableTaskIR) {
     this.context = context;
     this.task = task;
   }
@@ -18,37 +18,37 @@ export class BaseTaskBuilder {
 // Service Task Builder
 export class ServiceTaskBuilder extends BaseTaskBuilder {
   implementation(impl: string): this {
-    this.task.implementation = impl;
+    (this.task as any).implementation = impl;
     return this;
   }
 
   topic(topic: string): this {
-    this.task.topic = topic;
+    (this.task as any).topic = topic;
     return this;
   }
 
   operation(operationRef: string): this {
-    this.task.operationRef = operationRef;
+    (this.task as any).operationRef = operationRef;
     return this;
   }
 
   javaClass(className: string): this {
-    this.task.class = className;
+    (this.task as any).class = className;
     return this;
   }
 
   delegateExpression(expression: string): this {
-    this.task.delegateExpression = expression;
+    (this.task as any).delegateExpression = expression;
     return this;
   }
 
   expression(expression: string): this {
-    this.task.expression = expression;
+    (this.task as any).expression = expression;
     return this;
   }
 
   resultVariable(variable: string): this {
-    this.task.resultVariable = variable;
+    (this.task as any).resultVariable = variable;
     return this;
   }
 }
@@ -56,22 +56,22 @@ export class ServiceTaskBuilder extends BaseTaskBuilder {
 // User Task Builder
 export class UserTaskBuilder extends BaseTaskBuilder {
   assignee(assignee: string): this {
-    this.task.assignee = assignee;
+    (this.task as any).assignee = assignee;
     return this;
   }
 
   candidateUsers(users: string): this {
-    this.task.candidateUsers = users;
+    (this.task as any).candidateUsers = users;
     return this;
   }
 
   candidateGroups(groups: string): this {
-    this.task.candidateGroups = groups;
+    (this.task as any).candidateGroups = groups;
     return this;
   }
 
   formKey(formKey: string): this {
-    this.task.formKey = formKey;
+    (this.task as any).formKey = formKey;
     return this;
   }
 }
@@ -84,7 +84,7 @@ export class ManualTaskBuilder extends BaseTaskBuilder {
 // Script Task Builder
 export class ScriptTaskBuilder extends BaseTaskBuilder {
   script(script: string): this {
-    this.task.script = script;
+    (this.task as any).script = script;
     return this;
   }
 
@@ -94,7 +94,7 @@ export class ScriptTaskBuilder extends BaseTaskBuilder {
   }
 
   resultVariable(variable: string): this {
-    this.task.resultVariable = variable;
+    (this.task as any).resultVariable = variable;
     return this;
   }
 }
@@ -102,12 +102,12 @@ export class ScriptTaskBuilder extends BaseTaskBuilder {
 // Business Rule Task Builder
 export class BusinessRuleTaskBuilder extends BaseTaskBuilder {
   decisionRef(decisionRef: string): this {
-    this.task.decisionRef = decisionRef;
+    (this.task as any).decisionRef = decisionRef;
     return this;
   }
 
   resultVariable(variable: string): this {
-    this.task.resultVariable = variable;
+    (this.task as any).resultVariable = variable;
     return this;
   }
 }
@@ -115,12 +115,12 @@ export class BusinessRuleTaskBuilder extends BaseTaskBuilder {
 // Send Task Builder
 export class SendTaskBuilder extends BaseTaskBuilder {
   message(messageRef: string): this {
-    this.task.messageRef = messageRef;
+    (this.task as any).messageRef = messageRef;
     return this;
   }
 
   operation(operationRef: string): this {
-    this.task.operationRef = operationRef;
+    (this.task as any).operationRef = operationRef;
     return this;
   }
 }
@@ -128,17 +128,17 @@ export class SendTaskBuilder extends BaseTaskBuilder {
 // Receive Task Builder
 export class ReceiveTaskBuilder extends BaseTaskBuilder {
   message(messageRef: string): this {
-    this.task.messageRef = messageRef;
+    (this.task as any).messageRef = messageRef;
     return this;
   }
 
   operation(operationRef: string): this {
-    this.task.operationRef = operationRef;
+    (this.task as any).operationRef = operationRef;
     return this;
   }
 
   instantiate(instantiate: boolean = true): this {
-    this.task.instantiate = instantiate;
+    (this.task as any).instantiate = instantiate;
     return this;
   }
 }
@@ -146,7 +146,7 @@ export class ReceiveTaskBuilder extends BaseTaskBuilder {
 // Call Activity Builder
 export class CallActivityBuilder extends BaseTaskBuilder {
   calledElement(processId: string): this {
-    this.task.calledElement = processId;
+    (this.task as any).calledElement = processId;
     return this;
   }
 }

@@ -2,8 +2,20 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "exactOptionalPropertyTypes": false,
+    "module": "CommonJS",
+    "target": "ES2022",
+    "moduleResolution": "node"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../packages/core" },
+    { "path": "../../packages/dsl" },
+    { "path": "../../packages/compiler" },
+    { "path": "../../packages/runtime" },
+    { "path": "../../packages/importer" }
+  ]
 }

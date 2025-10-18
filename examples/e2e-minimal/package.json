@@ -2,6 +2,7 @@
   "name": "e2e-minimal",
   "version": "0.1.0",
   "description": "Minimal E2E test for @gftd/bpmn-sdk",
+  "type": "module",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "scripts": {

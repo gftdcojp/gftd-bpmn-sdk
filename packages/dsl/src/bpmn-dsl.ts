@@ -15,29 +15,50 @@ import type {
 } from '@gftd/bpmn-sdk/core';
 
 // Mutable versions for building
-interface MutableEventIR extends Omit<EventIR, 'eventDefinitions'> {
+export interface MutableEventIR extends Omit<EventIR, 'eventDefinitions'> {
   eventDefinitions?: EventDefinitionIR[];
 }
 
-interface MutableTaskIR extends Omit<TaskIR, 'name'> {
+export interface MutableTaskIR extends Omit<TaskIR, 'name'> {
   name?: string;
 }
 
-interface MutableGatewayIR extends Omit<GatewayIR, 'name'> {
+export interface MutableGatewayIR extends Omit<GatewayIR, 'name'> {
   name?: string;
 }
 
-interface MutableSubProcessIR extends Omit<SubProcessIR, 'name'> {
+export interface MutableSubProcessIR extends Omit<SubProcessIR, 'name'> {
   name?: string;
 }
 
-interface MutableSequenceFlowIR extends Omit<SequenceFlowIR, 'name'> {
+export interface MutableSequenceFlowIR extends Omit<SequenceFlowIR, 'name'> {
   name?: string;
 }
 
-interface MutableLaneSetIR extends Omit<LaneSetIR, 'name'> {
-  name?: string;
-}
+
+// Import builders
+import {
+  StartEventBuilder,
+  EndEventBuilder,
+  IntermediateCatchEventBuilder,
+  BoundaryEventBuilder,
+  ServiceTaskBuilder,
+  UserTaskBuilder,
+  ManualTaskBuilder,
+  ScriptTaskBuilder,
+  BusinessRuleTaskBuilder,
+  SendTaskBuilder,
+  ReceiveTaskBuilder,
+  CallActivityBuilder,
+  ExclusiveGatewayBuilder,
+  InclusiveGatewayBuilder,
+  ParallelGatewayBuilder,
+  EventBasedGatewayBuilder,
+  ComplexGatewayBuilder,
+  EmbeddedSubprocessBuilder,
+  SequenceFlowBuilder,
+} from './builders';
+import { LaneSetBuilder } from './builders/subprocess';
 
 // DSL Context - ビルド中の状態管理
 export class DslContext {
@@ -91,6 +112,17 @@ export function flow(name: string, builder: (f: FlowBuilder) => FlowBuilderResul
 export interface FlowBuilderResult {
   process: ProcessIR;
 }
+
+// Collaboration Builder (simplified for now)
+export class CollaborationBuilder {
+  constructor(private context: DslContext, private name: string) {}
+
+  // Placeholder implementation
+  build(): any {
+    return { type: 'collaboration', name: this.name };
+  }
+}
+
 
 // Flow Builder - プロセス構築のメインクラス
 export class FlowBuilder {
@@ -173,20 +205,20 @@ export class ProcessBuilder {
 
   intermediateCatchEvent(name?: string): IntermediateCatchEventBuilder {
     const eventId = this.context.generateId('IntermediateCatchEvent');
-    const event: EventIR = {
+    const event: MutableEventIR = {
       type: 'event',
       eventType: 'intermediate',
       id: eventId,
       name,
     };
-    this.elements.push(event);
+    this.elements.push(event as EventIR);
     this.context.addElement(eventId, event);
-    return new IntermediateCatchEventBuilder(this.context, event);
+    return new IntermediateCatchEventBuilder(this.context, event as EventIR);
   }
 
   boundaryEvent(attachedToRef: string, name?: string): BoundaryEventBuilder {
     const eventId = this.context.generateId('BoundaryEvent');
-    const event: EventIR = {
+    const event: MutableEventIR = {
       type: 'event',
       eventType: 'boundary',
       id: eventId,
@@ -194,9 +226,9 @@ export class ProcessBuilder {
       attachedToRef,
       cancelActivity: true, // Default to interrupting
     };
-    this.elements.push(event);
+    this.elements.push(event as EventIR);
     this.context.addElement(eventId, event);
-    return new BoundaryEventBuilder(this.context, event);
+    return new BoundaryEventBuilder(this.context, event as EventIR);
   }
 
   // Tasks
@@ -215,15 +247,15 @@ export class ProcessBuilder {
 
   userTask(name?: string): UserTaskBuilder {
     const taskId = this.context.generateId('UserTask');
-    const task: TaskIR = {
+    const task: MutableTaskIR = {
       type: 'task',
       taskType: 'user',
       id: taskId,
       name,
     };
-    this.elements.push(task);
+    this.elements.push(task as TaskIR);
     this.context.addElement(taskId, task);
-    return new UserTaskBuilder(this.context, task);
+    return new UserTaskBuilder(this.context, task as TaskIR);
   }
 
   manualTask(name?: string): ManualTaskBuilder {

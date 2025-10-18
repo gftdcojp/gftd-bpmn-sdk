@@ -2,7 +2,6 @@
   "name": "@gftd/bpmn-sdk/core",
   "version": "0.1.0",
   "description": "Core BPMN 2.0 types and IR for @gftd/bpmn-sdk",
-  "type": "module",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

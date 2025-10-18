@@ -21,6 +21,10 @@ declare module 'moddle-xml' {
     xml: string;
   }
 
+  export class Writer {
+    toXML(element: any, options: any, callback: (err: any, xml: string) => void): void;
+  }
+
   export function fromXML(xml: string, moddle: any): Promise<any>;
   export function toXML(element: any, options?: any): Promise<ToXMLResult>;
 }

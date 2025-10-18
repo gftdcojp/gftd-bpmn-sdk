@@ -2,7 +2,6 @@
   "name": "@gftd/bpmn-sdk/importer",
   "version": "0.1.0",
   "description": "BPMN XML to IR importer (reverse compiler)",
-  "type": "module",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

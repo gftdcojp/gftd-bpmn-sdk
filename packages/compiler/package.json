@@ -18,7 +18,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "doc": "typedoc --out docs src/index.ts"
   },
   "dependencies": {
     "@gftd/bpmn-sdk/core": "workspace:*",

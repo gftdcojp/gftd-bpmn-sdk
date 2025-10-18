@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "exactOptionalPropertyTypes": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "module": "CommonJS",
+    "target": "ES2022",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../packages/core" },
+    { "path": "../../packages/dsl" },
+    { "path": "../../packages/compiler" },
+    { "path": "../../packages/runtime" },
+    { "path": "../../packages/importer" },
+    { "path": "../../packages/human" },
+    { "path": "../../packages/validation" },
+    { "path": "../../packages/testing" },
+    { "path": "../../packages/ops" }
+  ]
+}

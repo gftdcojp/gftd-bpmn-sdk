@@ -19,12 +19,13 @@
     "format": "biome format --write .",
     "clean": "rm -rf dist"
   },
-  "dependencies": {
-    "@gftd/bpmn-sdk/core": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@gftd/bpmn-sdk/core": "workspace:*"
   },
   "files": [
     "dist"

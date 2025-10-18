@@ -14,8 +14,33 @@ import type {
   LaneSetIR,
 } from '@gftd/bpmn-sdk/core';
 
+// Mutable versions for building
+interface MutableEventIR extends Omit<EventIR, 'eventDefinitions'> {
+  eventDefinitions?: EventDefinitionIR[];
+}
+
+interface MutableTaskIR extends Omit<TaskIR, 'name'> {
+  name?: string;
+}
+
+interface MutableGatewayIR extends Omit<GatewayIR, 'name'> {
+  name?: string;
+}
+
+interface MutableSubProcessIR extends Omit<SubProcessIR, 'name'> {
+  name?: string;
+}
+
+interface MutableSequenceFlowIR extends Omit<SequenceFlowIR, 'name'> {
+  name?: string;
+}
+
+interface MutableLaneSetIR extends Omit<LaneSetIR, 'name'> {
+  name?: string;
+}
+
 // DSL Context - ビルド中の状態管理
-class DslContext {
+export class DslContext {
   private idCounter = 0;
   private elements = new Map<string, any>();
   private sequenceFlows: SequenceFlowIR[] = [];
@@ -122,28 +147,28 @@ export class ProcessBuilder {
   // Events
   startEvent(name?: string): StartEventBuilder {
     const eventId = this.context.generateId('StartEvent');
-    const event: EventIR = {
+    const event: MutableEventIR = {
       type: 'event',
       eventType: 'start',
       id: eventId,
       name,
     };
-    this.elements.push(event);
+    this.elements.push(event as EventIR);
     this.context.addElement(eventId, event);
-    return new StartEventBuilder(this.context, event);
+    return new StartEventBuilder(this.context, event as EventIR);
   }
 
   endEvent(name?: string): EndEventBuilder {
     const eventId = this.context.generateId('EndEvent');
-    const event: EventIR = {
+    const event: MutableEventIR = {
       type: 'event',
       eventType: 'end',
       id: eventId,
       name,
     };
-    this.elements.push(event);
+    this.elements.push(event as EventIR);
     this.context.addElement(eventId, event);
-    return new EndEventBuilder(this.context, event);
+    return new EndEventBuilder(this.context, event as EventIR);
   }
 
   intermediateCatchEvent(name?: string): IntermediateCatchEventBuilder {
@@ -177,15 +202,15 @@ export class ProcessBuilder {
   // Tasks
   serviceTask(name?: string): ServiceTaskBuilder {
     const taskId = this.context.generateId('ServiceTask');
-    const task: TaskIR = {
+    const task: MutableTaskIR = {
       type: 'task',
       taskType: 'service',
       id: taskId,
       name,
     };
-    this.elements.push(task);
+    this.elements.push(task as TaskIR);
     this.context.addElement(taskId, task);
-    return new ServiceTaskBuilder(this.context, task);
+    return new ServiceTaskBuilder(this.context, task as TaskIR);
   }
 
   userTask(name?: string): UserTaskBuilder {

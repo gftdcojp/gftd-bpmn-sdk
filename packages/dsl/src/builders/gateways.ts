@@ -14,6 +14,12 @@ export class BaseGatewayBuilder {
     this.gateway = gateway;
   }
 
+  // Set gateway name
+  name(name: string): this {
+    this.gateway.name = name;
+    return this;
+  }
+
   default(flowId: string): this {
     (this.gateway as any).default = flowId;
     return this;

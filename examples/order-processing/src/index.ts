@@ -21,113 +21,113 @@ import { bpmnPropertyTest, bpmnScenarioTest } from '@gftd/bpmn-sdk/testing';
 
 async function createOrderProcessingWorkflow() {
   return flow('OrderProcessingWorkflow', f => f
-    .process('OrderProcessingWorkflow', p => p
+    .process('OrderProcessingWorkflow', p => {
       // === 開始イベント ===
-      .startEvent('OrderReceived')
-        .message('orderMessage')
+      p.startEvent('OrderReceived')
         .name('注文受付')
+        .message('orderMessage');
 
       // === 注文検証 ===
-      .serviceTask('ValidateOrder')
+      p.serviceTask('ValidateOrder')
         .name('注文内容検証')
-        .implementation('orderValidationService')
+        .implementation('orderValidationService');
 
       // === 在庫チェック ===
-      .serviceTask('CheckInventory')
+      p.serviceTask('CheckInventory')
         .name('在庫確認')
-        .implementation('inventoryCheckService')
+        .implementation('inventoryCheckService');
 
       // === 条件分岐: 金額ベース ===
-      .exclusiveGateway('AmountCheck')
-        .name('注文金額チェック')
+      p.exclusiveGateway('AmountCheck')
+        .name('注文金額チェック');
 
       // === 高額注文: 承認フロー ===
-      .userTask('ManagerApproval')
+      p.userTask('ManagerApproval')
         .name('マネージャー承認')
         .assignee('${managerId}')
-        .dueDate('${approvalDeadline}')
+        .dueDate('${approvalDeadline}');
 
       // === 通常注文: 自動処理 ===
-      .serviceTask('AutoApproval')
+      p.serviceTask('AutoApproval')
         .name('自動承認')
-        .implementation('autoApprovalService')
+        .implementation('autoApprovalService');
 
       // === 支払い処理 ===
-      .serviceTask('ProcessPayment')
+      p.serviceTask('ProcessPayment')
         .name('支払い処理')
-        .implementation('paymentService')
+        .implementation('paymentService');
 
       // === 配送準備 ===
-      .userTask('PrepareShipping')
+      p.userTask('PrepareShipping')
         .name('配送準備')
         .candidateGroups(['warehouse'])
-        .dueDate('${shippingDeadline}')
+        .dueDate('${shippingDeadline}');
 
       // === 配送 ===
-      .serviceTask('ShipOrder')
+      p.serviceTask('ShipOrder')
         .name('注文配送')
-        .implementation('shippingService')
+        .implementation('shippingService');
 
       // === 完了 ===
-      .endEvent('OrderCompleted')
-        .name('注文完了')
+      p.endEvent('OrderCompleted')
+        .name('注文完了');
 
       // === エラー処理 ===
-      .boundaryEvent('ValidationError')
+      p.boundaryEvent('ValidationError')
         .attachedToRef('ValidateOrder')
         .error('validationError')
-        .name('検証エラー')
+        .name('検証エラー');
 
-      .boundaryEvent('OutOfStock')
+      p.boundaryEvent('OutOfStock')
         .attachedToRef('CheckInventory')
         .signal('outOfStockSignal')
-        .name('在庫不足')
+        .name('在庫不足');
 
-      .boundaryEvent('PaymentFailed')
+      p.boundaryEvent('PaymentFailed')
         .attachedToRef('ProcessPayment')
         .error('paymentError')
-        .name('支払い失敗')
+        .name('支払い失敗');
 
       // エラーハンドリングタスク
-      .serviceTask('SendErrorEmail')
+      p.serviceTask('SendErrorEmail')
         .name('エラーメール送信')
-        .implementation('errorEmailService')
+        .implementation('errorEmailService');
 
-      .serviceTask('NotifyCustomer')
+      p.serviceTask('NotifyCustomer')
         .name('顧客通知')
-        .implementation('customerNotificationService')
+        .implementation('customerNotificationService');
 
       // === シーケンスフロー ===
 
       // メインフロー
-      .sequenceFlow('OrderReceived', 'ValidateOrder')
-      .sequenceFlow('ValidateOrder', 'CheckInventory')
-      .sequenceFlow('CheckInventory', 'AmountCheck')
+      p.sequenceFlow('OrderReceived', 'ValidateOrder');
+      p.sequenceFlow('ValidateOrder', 'CheckInventory');
+      p.sequenceFlow('CheckInventory', 'AmountCheck');
 
       // 金額分岐
-      .sequenceFlow('AmountCheck', 'ManagerApproval')
-        .condition('${totalAmount > 50000}') // 5万円以上は承認が必要
+      p.sequenceFlow('AmountCheck', 'ManagerApproval')
+        .condition('${totalAmount > 50000}'); // 5万円以上は承認が必要
 
-      .sequenceFlow('AmountCheck', 'AutoApproval')
-        .condition('${totalAmount <= 50000}')
+      p.sequenceFlow('AmountCheck', 'AutoApproval')
+        .condition('${totalAmount <= 50000}');
 
       // 承認後の処理
-      .sequenceFlow('ManagerApproval', 'ProcessPayment')
-      .sequenceFlow('AutoApproval', 'ProcessPayment')
+      p.sequenceFlow('ManagerApproval', 'ProcessPayment');
+      p.sequenceFlow('AutoApproval', 'ProcessPayment');
 
       // 配送処理
-      .sequenceFlow('ProcessPayment', 'PrepareShipping')
-      .sequenceFlow('PrepareShipping', 'ShipOrder')
-      .sequenceFlow('ShipOrder', 'OrderCompleted')
+      p.sequenceFlow('ProcessPayment', 'PrepareShipping');
+      p.sequenceFlow('PrepareShipping', 'ShipOrder');
+      p.sequenceFlow('ShipOrder', 'OrderCompleted');
 
       // エラーハンドリング
-      .sequenceFlow('ValidationError', 'SendErrorEmail')
-      .sequenceFlow('OutOfStock', 'NotifyCustomer')
-      .sequenceFlow('PaymentFailed', 'SendErrorEmail')
+      p.sequenceFlow('ValidationError', 'SendErrorEmail');
+      p.sequenceFlow('OutOfStock', 'NotifyCustomer');
+      p.sequenceFlow('PaymentFailed', 'SendErrorEmail');
 
-      .sequenceFlow('SendErrorEmail', 'OrderCompleted')
-      .sequenceFlow('NotifyCustomer', 'OrderCompleted')
-    )
+      p.sequenceFlow('SendErrorEmail', 'OrderCompleted');
+      p.sequenceFlow('NotifyCustomer', 'OrderCompleted');
+    })
   );
 }
 
@@ -254,7 +254,7 @@ async function runOrderProcessingDemo() {
 
   let runtime: BpmnRuntime;
   let taskManager: HumanTaskManager;
-  let monitor: BpmnMonitor;
+  let monitor: BpmnMonitor | undefined;
 
   try {
     // ==========================================
@@ -311,7 +311,7 @@ async function runOrderProcessingDemo() {
 
     const propertyTests = ['noDeadEnds', 'gatewayConsistency', 'properTermination'];
     for (const property of propertyTests) {
-      const result = await bpmnPropertyTest(runtime, orderWorkflow, property, {
+      const result = await bpmnPropertyTest(orderWorkflow, runtime, property, {
         maxTestCases: 10,
         timeout: 5000
       });
@@ -359,7 +359,7 @@ async function runOrderProcessingDemo() {
 
       try {
         // Deploy and start process
-        const { context } = await runtime.startInstance(
+        const context = await runtime.startInstance(
           await runtime.deployProcess(orderWorkflow, `OrderProcess-${order.id}`),
           {
             instanceId: `instance-${order.id}`,
@@ -387,13 +387,14 @@ async function runOrderProcessingDemo() {
           console.log('📋 Found approval task, processing...');
 
           const approvalTask = pendingTasks[0];
-          await taskManager.claimTask(approvalTask.id, 'manager@example.com');
-          await taskManager.completeTask(approvalTask.id, 'manager@example.com', {
+          if (approvalTask) {
+            await taskManager.claimTask(approvalTask.id, 'manager@example.com');
+            await taskManager.completeTask(approvalTask.id, 'manager@example.com', {
             approved: true,
             approvalDate: new Date(),
             comments: 'High-value order approved'
           });
-
+          }
           console.log('✅ Approval task completed');
         }
 
@@ -403,13 +404,14 @@ async function runOrderProcessingDemo() {
           console.log('📦 Found shipping task, processing...');
 
           const shippingTask = warehouseTasks[0];
-          await taskManager.claimTask(shippingTask.id, 'warehouse-user@example.com');
-          await taskManager.completeTask(shippingTask.id, 'warehouse-user@example.com', {
+          if (shippingTask) {
+            await taskManager.claimTask(shippingTask.id, 'warehouse-user@example.com');
+            await taskManager.completeTask(shippingTask.id, 'warehouse-user@example.com', {
             prepared: true,
             preparationDate: new Date(),
             notes: 'Order prepared for shipping'
           });
-
+          }
           console.log('✅ Shipping task completed');
         }
 
@@ -461,7 +463,7 @@ async function runOrderProcessingDemo() {
     console.error('\n❌ Demo failed:', error);
     console.error('Stack trace:', error instanceof Error ? error.stack : 'No stack trace');
 
-    if (monitor) {
+    if (monitor !== undefined) {
       await monitor.shutdown().catch(console.error);
     }
 

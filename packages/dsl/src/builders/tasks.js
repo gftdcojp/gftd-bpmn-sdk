@@ -1,7 +1,10 @@
+"use strict";
 // Merkle DAG: dsl_task_builders
 // DSL Task Builders - Service/User/Manual/Script/BusinessRule/Send/Receive/CallActivity
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CallActivityBuilder = exports.ReceiveTaskBuilder = exports.SendTaskBuilder = exports.BusinessRuleTaskBuilder = exports.ScriptTaskBuilder = exports.ManualTaskBuilder = exports.UserTaskBuilder = exports.ServiceTaskBuilder = exports.BaseTaskBuilder = void 0;
 // Base Task Builder
-export class BaseTaskBuilder {
+class BaseTaskBuilder {
     context;
     task;
     constructor(context, task) {
@@ -9,8 +12,9 @@ export class BaseTaskBuilder {
         this.task = task;
     }
 }
+exports.BaseTaskBuilder = BaseTaskBuilder;
 // Service Task Builder
-export class ServiceTaskBuilder extends BaseTaskBuilder {
+class ServiceTaskBuilder extends BaseTaskBuilder {
     implementation(impl) {
         this.task.implementation = impl;
         return this;
@@ -40,8 +44,9 @@ export class ServiceTaskBuilder extends BaseTaskBuilder {
         return this;
     }
 }
+exports.ServiceTaskBuilder = ServiceTaskBuilder;
 // User Task Builder
-export class UserTaskBuilder extends BaseTaskBuilder {
+class UserTaskBuilder extends BaseTaskBuilder {
     assignee(assignee) {
         this.task.assignee = assignee;
         return this;
@@ -59,11 +64,13 @@ export class UserTaskBuilder extends BaseTaskBuilder {
         return this;
     }
 }
+exports.UserTaskBuilder = UserTaskBuilder;
 // Manual Task Builder
-export class ManualTaskBuilder extends BaseTaskBuilder {
+class ManualTaskBuilder extends BaseTaskBuilder {
 }
+exports.ManualTaskBuilder = ManualTaskBuilder;
 // Script Task Builder
-export class ScriptTaskBuilder extends BaseTaskBuilder {
+class ScriptTaskBuilder extends BaseTaskBuilder {
     script(script) {
         this.task.script = script;
         return this;
@@ -77,8 +84,9 @@ export class ScriptTaskBuilder extends BaseTaskBuilder {
         return this;
     }
 }
+exports.ScriptTaskBuilder = ScriptTaskBuilder;
 // Business Rule Task Builder
-export class BusinessRuleTaskBuilder extends BaseTaskBuilder {
+class BusinessRuleTaskBuilder extends BaseTaskBuilder {
     decisionRef(decisionRef) {
         this.task.decisionRef = decisionRef;
         return this;
@@ -88,8 +96,9 @@ export class BusinessRuleTaskBuilder extends BaseTaskBuilder {
         return this;
     }
 }
+exports.BusinessRuleTaskBuilder = BusinessRuleTaskBuilder;
 // Send Task Builder
-export class SendTaskBuilder extends BaseTaskBuilder {
+class SendTaskBuilder extends BaseTaskBuilder {
     message(messageRef) {
         this.task.messageRef = messageRef;
         return this;
@@ -99,8 +108,9 @@ export class SendTaskBuilder extends BaseTaskBuilder {
         return this;
     }
 }
+exports.SendTaskBuilder = SendTaskBuilder;
 // Receive Task Builder
-export class ReceiveTaskBuilder extends BaseTaskBuilder {
+class ReceiveTaskBuilder extends BaseTaskBuilder {
     message(messageRef) {
         this.task.messageRef = messageRef;
         return this;
@@ -114,11 +124,13 @@ export class ReceiveTaskBuilder extends BaseTaskBuilder {
         return this;
     }
 }
+exports.ReceiveTaskBuilder = ReceiveTaskBuilder;
 // Call Activity Builder
-export class CallActivityBuilder extends BaseTaskBuilder {
+class CallActivityBuilder extends BaseTaskBuilder {
     calledElement(processId) {
         this.task.calledElement = processId;
         return this;
     }
 }
+exports.CallActivityBuilder = CallActivityBuilder;
 //# sourceMappingURL=tasks.js.map

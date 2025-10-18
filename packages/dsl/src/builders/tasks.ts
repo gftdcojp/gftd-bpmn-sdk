@@ -13,6 +13,12 @@ export class BaseTaskBuilder {
     this.context = context;
     this.task = task;
   }
+
+  // Set task name
+  name(name: string): this {
+    this.task.name = name;
+    return this;
+  }
 }
 
 // Service Task Builder
@@ -65,8 +71,13 @@ export class UserTaskBuilder extends BaseTaskBuilder {
     return this;
   }
 
-  candidateGroups(groups: string): this {
+  candidateGroups(groups: string[]): this {
     (this.task as any).candidateGroups = groups;
+    return this;
+  }
+
+  dueDate(dueDate: string): this {
+    (this.task as any).dueDate = dueDate;
     return this;
   }
 

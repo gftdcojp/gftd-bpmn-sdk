@@ -1,7 +1,10 @@
+"use strict";
 // Merkle DAG: dsl_event_builders
 // DSL Event Builders - Start/End/Intermediate/Boundary Events
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BoundaryEventBuilder = exports.IntermediateCatchEventBuilder = exports.EndEventBuilder = exports.StartEventBuilder = exports.BaseEventBuilder = void 0;
 // Base Event Builder
-export class BaseEventBuilder {
+class BaseEventBuilder {
     context;
     event;
     constructor(context, event) {
@@ -103,17 +106,21 @@ export class BaseEventBuilder {
         return this;
     }
 }
+exports.BaseEventBuilder = BaseEventBuilder;
 // Start Event Builder
-export class StartEventBuilder extends BaseEventBuilder {
+class StartEventBuilder extends BaseEventBuilder {
 }
+exports.StartEventBuilder = StartEventBuilder;
 // End Event Builder
-export class EndEventBuilder extends BaseEventBuilder {
+class EndEventBuilder extends BaseEventBuilder {
 }
+exports.EndEventBuilder = EndEventBuilder;
 // Intermediate Catch Event Builder
-export class IntermediateCatchEventBuilder extends BaseEventBuilder {
+class IntermediateCatchEventBuilder extends BaseEventBuilder {
 }
+exports.IntermediateCatchEventBuilder = IntermediateCatchEventBuilder;
 // Boundary Event Builder
-export class BoundaryEventBuilder extends BaseEventBuilder {
+class BoundaryEventBuilder extends BaseEventBuilder {
     nonInterrupting() {
         // Mutable cast for building
         this.event.cancelActivity = false;
@@ -125,4 +132,5 @@ export class BoundaryEventBuilder extends BaseEventBuilder {
         return this;
     }
 }
+exports.BoundaryEventBuilder = BoundaryEventBuilder;
 //# sourceMappingURL=events.js.map

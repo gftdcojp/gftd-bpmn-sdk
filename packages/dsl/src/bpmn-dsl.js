@@ -1,10 +1,14 @@
+"use strict";
 // Merkle DAG: bpmn_dsl_builder
 // BPMN 2.0 TypeScript DSL - 宣言的モデリング
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ProcessBuilder = exports.FlowBuilder = exports.CollaborationBuilder = exports.DslContext = void 0;
+exports.flow = flow;
 // Import builders
-import { StartEventBuilder, EndEventBuilder, IntermediateCatchEventBuilder, BoundaryEventBuilder, ServiceTaskBuilder, UserTaskBuilder, ManualTaskBuilder, ScriptTaskBuilder, BusinessRuleTaskBuilder, SendTaskBuilder, ReceiveTaskBuilder, CallActivityBuilder, ExclusiveGatewayBuilder, InclusiveGatewayBuilder, ParallelGatewayBuilder, EventBasedGatewayBuilder, ComplexGatewayBuilder, EmbeddedSubprocessBuilder, SequenceFlowBuilder, } from './builders';
-import { LaneSetBuilder } from './builders/subprocess';
+const builders_1 = require("./builders");
+const subprocess_1 = require("./builders/subprocess");
 // DSL Context - ビルド中の状態管理
-export class DslContext {
+class DslContext {
     idCounter = 0;
     elements = new Map();
     sequenceFlows = [];
@@ -27,11 +31,13 @@ export class DslContext {
         return Array.from(this.elements.values());
     }
 }
+exports.DslContext = DslContext;
 // Flow Builder - メインエントリーポイント
-export function flow(name, builder) {
+function flow(name, builder) {
     const context = new DslContext();
     const flowBuilder = new FlowBuilder(context, name);
-    const result = builder(flowBuilder);
+    builder(flowBuilder);
+    const result = flowBuilder.build();
     return {
         definitions: {
             id: context.generateId('Definitions'),
@@ -43,7 +49,7 @@ export function flow(name, builder) {
     };
 }
 // Collaboration Builder (simplified for now)
-export class CollaborationBuilder {
+class CollaborationBuilder {
     context;
     name;
     constructor(context, name) {
@@ -55,28 +61,70 @@ export class CollaborationBuilder {
         return { type: 'collaboration', name: this.name };
     }
 }
+exports.CollaborationBuilder = CollaborationBuilder;
 // Flow Builder - プロセス構築のメインクラス
-export class FlowBuilder {
+class FlowBuilder {
     context;
     processName;
     elements = [];
     laneSets = [];
+    _processBuilder;
     constructor(context, processName) {
         this.context = context;
         this.processName = processName;
     }
-    // Process configuration
-    process(config = {}) {
+    process(idOrConfig, callback) {
+        let config = {};
+        let actualCallback;
+        if (typeof idOrConfig === 'function') {
+            // process(callback)
+            actualCallback = idOrConfig;
+        }
+        else if (typeof idOrConfig === 'string') {
+            // process(id, callback)
+            config.id = idOrConfig;
+            actualCallback = callback;
+        }
+        else if (idOrConfig && typeof idOrConfig === 'object') {
+            // process(config, callback)
+            config = idOrConfig;
+            actualCallback = callback;
+        }
+        else {
+            throw new Error('Invalid arguments for process method');
+        }
         const processId = config.id || this.context.generateId('Process');
-        return new ProcessBuilder(this.context, processId, this.processName, config.isExecutable ?? true);
+        const processBuilder = new ProcessBuilder(this.context, processId, this.processName, config.isExecutable ?? true);
+        // Store reference to the process builder for building
+        this._processBuilder = processBuilder;
+        // Call the callback with the process builder if provided
+        if (actualCallback) {
+            actualCallback(processBuilder);
+        }
     }
     // Collaboration (multi-pool)
     collaboration(name) {
         return new CollaborationBuilder(this.context, name);
     }
+    // Build the flow
+    build() {
+        if (this._processBuilder) {
+            return this._processBuilder.build();
+        }
+        return {
+            process: {
+                id: this.processName,
+                isExecutable: true,
+                flowElements: this.context.getElements(),
+                sequenceFlows: this.context.getSequenceFlows(),
+                laneSets: this.laneSets.length > 0 ? this.laneSets : undefined,
+            }
+        };
+    }
 }
+exports.FlowBuilder = FlowBuilder;
 // Process Builder
-export class ProcessBuilder {
+class ProcessBuilder {
     context;
     processId;
     processName;
@@ -98,7 +146,7 @@ export class ProcessBuilder {
             lanes: [],
         };
         this.laneSets.push(laneSet);
-        return new LaneSetBuilder(this.context, laneSet);
+        return new subprocess_1.LaneSetBuilder(this.context, laneSet);
     }
     // Events
     startEvent(name) {
@@ -111,7 +159,7 @@ export class ProcessBuilder {
         };
         this.elements.push(event);
         this.context.addElement(eventId, event);
-        return new StartEventBuilder(this.context, event);
+        return new builders_1.StartEventBuilder(this.context, event);
     }
     endEvent(name) {
         const eventId = this.context.generateId('EndEvent');
@@ -123,7 +171,7 @@ export class ProcessBuilder {
         };
         this.elements.push(event);
         this.context.addElement(eventId, event);
-        return new EndEventBuilder(this.context, event);
+        return new builders_1.EndEventBuilder(this.context, event);
     }
     intermediateCatchEvent(name) {
         const eventId = this.context.generateId('IntermediateCatchEvent');
@@ -135,7 +183,7 @@ export class ProcessBuilder {
         };
         this.elements.push(event);
         this.context.addElement(eventId, event);
-        return new IntermediateCatchEventBuilder(this.context, event);
+        return new builders_1.IntermediateCatchEventBuilder(this.context, event);
     }
     boundaryEvent(attachedToRef, name) {
         const eventId = this.context.generateId('BoundaryEvent');
@@ -149,7 +197,7 @@ export class ProcessBuilder {
         };
         this.elements.push(event);
         this.context.addElement(eventId, event);
-        return new BoundaryEventBuilder(this.context, event);
+        return new builders_1.BoundaryEventBuilder(this.context, event);
     }
     // Tasks
     serviceTask(name) {
@@ -162,7 +210,7 @@ export class ProcessBuilder {
         };
         this.elements.push(task);
         this.context.addElement(taskId, task);
-        return new ServiceTaskBuilder(this.context, task);
+        return new builders_1.ServiceTaskBuilder(this.context, task);
     }
     userTask(name) {
         const taskId = this.context.generateId('UserTask');
@@ -174,7 +222,7 @@ export class ProcessBuilder {
         };
         this.elements.push(task);
         this.context.addElement(taskId, task);
-        return new UserTaskBuilder(this.context, task);
+        return new builders_1.UserTaskBuilder(this.context, task);
     }
     manualTask(name) {
         const taskId = this.context.generateId('ManualTask');
@@ -186,7 +234,7 @@ export class ProcessBuilder {
         };
         this.elements.push(task);
         this.context.addElement(taskId, task);
-        return new ManualTaskBuilder(this.context, task);
+        return new builders_1.ManualTaskBuilder(this.context, task);
     }
     scriptTask(name) {
         const taskId = this.context.generateId('ScriptTask');
@@ -198,7 +246,7 @@ export class ProcessBuilder {
         };
         this.elements.push(task);
         this.context.addElement(taskId, task);
-        return new ScriptTaskBuilder(this.context, task);
+        return new builders_1.ScriptTaskBuilder(this.context, task);
     }
     businessRuleTask(name) {
         const taskId = this.context.generateId('BusinessRuleTask');
@@ -210,7 +258,7 @@ export class ProcessBuilder {
         };
         this.elements.push(task);
         this.context.addElement(taskId, task);
-        return new BusinessRuleTaskBuilder(this.context, task);
+        return new builders_1.BusinessRuleTaskBuilder(this.context, task);
     }
     sendTask(name) {
         const taskId = this.context.generateId('SendTask');
@@ -222,7 +270,7 @@ export class ProcessBuilder {
         };
         this.elements.push(task);
         this.context.addElement(taskId, task);
-        return new SendTaskBuilder(this.context, task);
+        return new builders_1.SendTaskBuilder(this.context, task);
     }
     receiveTask(name) {
         const taskId = this.context.generateId('ReceiveTask');
@@ -234,7 +282,7 @@ export class ProcessBuilder {
         };
         this.elements.push(task);
         this.context.addElement(taskId, task);
-        return new ReceiveTaskBuilder(this.context, task);
+        return new builders_1.ReceiveTaskBuilder(this.context, task);
     }
     callActivity(name) {
         const taskId = this.context.generateId('CallActivity');
@@ -246,7 +294,7 @@ export class ProcessBuilder {
         };
         this.elements.push(task);
         this.context.addElement(taskId, task);
-        return new CallActivityBuilder(this.context, task);
+        return new builders_1.CallActivityBuilder(this.context, task);
     }
     // Gateways
     exclusiveGateway(name) {
@@ -259,7 +307,7 @@ export class ProcessBuilder {
         };
         this.elements.push(gateway);
         this.context.addElement(gatewayId, gateway);
-        return new ExclusiveGatewayBuilder(this.context, gateway);
+        return new builders_1.ExclusiveGatewayBuilder(this.context, gateway);
     }
     inclusiveGateway(name) {
         const gatewayId = this.context.generateId('InclusiveGateway');
@@ -271,7 +319,7 @@ export class ProcessBuilder {
         };
         this.elements.push(gateway);
         this.context.addElement(gatewayId, gateway);
-        return new InclusiveGatewayBuilder(this.context, gateway);
+        return new builders_1.InclusiveGatewayBuilder(this.context, gateway);
     }
     parallelGateway(name) {
         const gatewayId = this.context.generateId('ParallelGateway');
@@ -283,7 +331,7 @@ export class ProcessBuilder {
         };
         this.elements.push(gateway);
         this.context.addElement(gatewayId, gateway);
-        return new ParallelGatewayBuilder(this.context, gateway);
+        return new builders_1.ParallelGatewayBuilder(this.context, gateway);
     }
     eventBasedGateway(name) {
         const gatewayId = this.context.generateId('EventBasedGateway');
@@ -297,7 +345,7 @@ export class ProcessBuilder {
         };
         this.elements.push(gateway);
         this.context.addElement(gatewayId, gateway);
-        return new EventBasedGatewayBuilder(this.context, gateway);
+        return new builders_1.EventBasedGatewayBuilder(this.context, gateway);
     }
     complexGateway(name) {
         const gatewayId = this.context.generateId('ComplexGateway');
@@ -309,7 +357,7 @@ export class ProcessBuilder {
         };
         this.elements.push(gateway);
         this.context.addElement(gatewayId, gateway);
-        return new ComplexGatewayBuilder(this.context, gateway);
+        return new builders_1.ComplexGatewayBuilder(this.context, gateway);
     }
     // Subprocesses
     embeddedSubprocess(name) {
@@ -324,7 +372,7 @@ export class ProcessBuilder {
         };
         this.elements.push(subProcess);
         this.context.addElement(subProcessId, subProcess);
-        return new EmbeddedSubprocessBuilder(this.context, subProcess);
+        return new builders_1.EmbeddedSubprocessBuilder(this.context, subProcess);
     }
     // Sequence flows
     sequenceFlow(sourceRef, targetRef, name) {
@@ -336,7 +384,7 @@ export class ProcessBuilder {
             targetRef,
         };
         this.context.addSequenceFlow(flow);
-        return new SequenceFlowBuilder(this.context, flow);
+        return new builders_1.SequenceFlowBuilder(this.context, flow);
     }
     // Build process
     build() {
@@ -351,4 +399,5 @@ export class ProcessBuilder {
         return { process };
     }
 }
+exports.ProcessBuilder = ProcessBuilder;
 //# sourceMappingURL=bpmn-dsl.js.map

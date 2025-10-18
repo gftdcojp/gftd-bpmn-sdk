@@ -30,15 +30,15 @@ describe('Monitoring Integration', () => {
 
     monitor.attachToRuntime(runtime);
 
-    testProcess = flow('TestProcess', f => f
-      .process('TestProcess', p => p
-        .startEvent('StartEvent')
-        .userTask('UserTask1')
-        .endEvent('EndEvent')
-        .sequenceFlow('StartEvent', 'UserTask1')
-        .sequenceFlow('UserTask1', 'EndEvent')
-      )
-    );
+    testProcess = flow('TestProcess', f => {
+      f.process('TestProcess', p => {
+        p.startEvent('StartEvent');
+        p.userTask('UserTask1');
+        p.endEvent('EndEvent');
+        p.sequenceFlow('StartEvent', 'UserTask1');
+        p.sequenceFlow('UserTask1', 'EndEvent');
+      });
+    });
   });
 
   afterEach(async () => {

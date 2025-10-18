@@ -90,10 +90,9 @@ export class BpmnRuntime {
       processId,
       instanceId,
       variables,
-      status: 'completed', // Mark as completed immediately for testing
+      status: 'running', // Mark as running for testing
       currentActivities: [],
       startTime: new Date(),
-      endTime: new Date(),
     };
 
     // Store instance

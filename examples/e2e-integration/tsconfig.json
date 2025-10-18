@@ -2,10 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
     "skipLibCheck": true,
     "exactOptionalPropertyTypes": false,
-    "composite": true,
+    "composite": false,
     "declaration": true,
     "declarationMap": true,
     "module": "CommonJS",
@@ -16,15 +15,4 @@
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"],
-  "references": [
-    { "path": "../../packages/core" },
-    { "path": "../../packages/dsl" },
-    { "path": "../../packages/compiler" },
-    { "path": "../../packages/runtime" },
-    { "path": "../../packages/importer" },
-    { "path": "../../packages/human" },
-    { "path": "../../packages/validation" },
-    { "path": "../../packages/testing" },
-    { "path": "../../packages/ops" }
-  ]
 }

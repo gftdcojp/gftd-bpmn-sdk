@@ -27,7 +27,7 @@ export declare class DslContext {
     getSequenceFlows(): SequenceFlowIR[];
     getElements(): any[];
 }
-export declare function flow(name: string, builder: (f: FlowBuilder) => FlowBuilderResult): BpmnIR;
+export declare function flow(name: string, builder: (f: FlowBuilder) => void): BpmnIR;
 export interface FlowBuilderResult {
     process: ProcessIR;
 }
@@ -42,12 +42,15 @@ export declare class FlowBuilder {
     private processName;
     private elements;
     private laneSets;
+    private _processBuilder?;
     constructor(context: DslContext, processName: string);
-    process(config?: {
+    process(idOrConfig?: string | {
         id?: string;
         isExecutable?: boolean;
-    }): ProcessBuilder;
+    }, callback?: (builder: ProcessBuilder) => void): void;
+    process(callback: (builder: ProcessBuilder) => void): void;
     collaboration(name: string): CollaborationBuilder;
+    build(): FlowBuilderResult;
 }
 export declare class ProcessBuilder {
     private context;

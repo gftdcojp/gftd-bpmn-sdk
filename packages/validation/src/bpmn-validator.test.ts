@@ -29,7 +29,7 @@ describe('@gftd/bpmn-sdk/validation', () => {
           sequenceFlows: [
             { id: 'Flow1', sourceRef: 'StartEvent', targetRef: 'UserTask' },
             { id: 'Flow2', sourceRef: 'UserTask', targetRef: 'EndEvent' }
-          ]
+          ],
         }
       };
 

@@ -15,8 +15,9 @@ import type {
 } from '@gftd/bpmn-sdk/core';
 
 // Mutable versions for building
-export interface MutableEventIR extends Omit<EventIR, 'eventDefinitions'> {
+export interface MutableEventIR extends Omit<EventIR, 'eventDefinitions' | 'name'> {
   eventDefinitions?: EventDefinitionIR[];
+  name?: string;
 }
 
 export interface MutableTaskIR extends Omit<TaskIR, 'name'> {

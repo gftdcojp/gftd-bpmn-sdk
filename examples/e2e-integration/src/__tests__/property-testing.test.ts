@@ -11,22 +11,20 @@ describe('Property-based Testing Integration', () => {
   beforeEach(async () => {
     runtime = new BpmnRuntime();
 
-    testProcess = flow('TestProcess', f => f
-      .process('TestProcess', p => p
-        .startEvent('StartEvent')
-        .userTask('UserTask1')
-        .exclusiveGateway('Gateway1')
-        .serviceTask('ServiceTask1')
-        .endEvent('EndEvent')
-        .sequenceFlow('StartEvent', 'UserTask1')
-        .sequenceFlow('UserTask1', 'Gateway1')
-        .sequenceFlow('Gateway1', 'ServiceTask1')
-          .condition('${approved}')
-        .sequenceFlow('Gateway1', 'EndEvent')
-          .condition('${!approved}')
-        .sequenceFlow('ServiceTask1', 'EndEvent')
-      )
-    );
+    testProcess = flow('TestProcess', f => {
+      f.process('TestProcess', p => {
+        p.startEvent('StartEvent');
+        p.userTask('UserTask1');
+        p.exclusiveGateway('Gateway1');
+        p.serviceTask('ServiceTask1');
+        p.endEvent('EndEvent');
+        p.sequenceFlow('StartEvent', 'UserTask1');
+        p.sequenceFlow('UserTask1', 'Gateway1');
+        p.sequenceFlow('Gateway1', 'ServiceTask1').condition('${approved}');
+        p.sequenceFlow('Gateway1', 'EndEvent').condition('${!approved}');
+        p.sequenceFlow('ServiceTask1', 'EndEvent');
+      });
+    });
   });
 
   test('should test noDeadEnds property', async () => {

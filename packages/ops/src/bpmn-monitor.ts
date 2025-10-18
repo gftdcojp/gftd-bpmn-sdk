@@ -548,6 +548,13 @@ export class BpmnMonitor {
       });
     });
   }
+
+  /**
+   * アラート管理 - アクティブなアラートを取得
+   */
+  getActiveAlerts(): Alert[] {
+    return [...this.alerts];
+  }
 }
 
 // タイプ定義（内部使用）

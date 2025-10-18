@@ -1,8 +1,11 @@
+"use strict";
 // Merkle DAG: dsl_subprocess_builders
 // DSL SubProcess Builders - Embedded/Event/Transaction/AdHoc
-import { ProcessBuilder } from '../bpmn-dsl';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MessageFlowBuilder = exports.ParticipantBuilder = exports.CollaborationBuilder = exports.LaneBuilder = exports.LaneSetBuilder = exports.AdHocSubprocessBuilder = exports.TransactionSubprocessBuilder = exports.EventSubprocessBuilder = exports.EmbeddedSubprocessBuilder = exports.BaseSubprocessBuilder = void 0;
+const bpmn_dsl_1 = require("../bpmn-dsl");
 // Base SubProcess Builder
-export class BaseSubprocessBuilder {
+class BaseSubprocessBuilder {
     context;
     subProcess;
     constructor(context, subProcess) {
@@ -13,24 +16,27 @@ export class BaseSubprocessBuilder {
     startEvent(name) {
         // Create a nested process builder for subprocess content
         const nestedProcessId = this.context.generateId('NestedProcess');
-        const nestedBuilder = new ProcessBuilder(this.context, nestedProcessId, name || 'SubProcess', false // Subprocesses are not executable by themselves
+        const nestedBuilder = new bpmn_dsl_1.ProcessBuilder(this.context, nestedProcessId, name || 'SubProcess', false // Subprocesses are not executable by themselves
         );
         // The nested builder will add elements to the subprocess
         return nestedBuilder;
     }
 }
+exports.BaseSubprocessBuilder = BaseSubprocessBuilder;
 // Embedded SubProcess Builder
-export class EmbeddedSubprocessBuilder extends BaseSubprocessBuilder {
+class EmbeddedSubprocessBuilder extends BaseSubprocessBuilder {
 }
+exports.EmbeddedSubprocessBuilder = EmbeddedSubprocessBuilder;
 // Event SubProcess Builder
-export class EventSubprocessBuilder extends BaseSubprocessBuilder {
+class EventSubprocessBuilder extends BaseSubprocessBuilder {
     constructor(context, subProcess) {
         super(context, subProcess);
         this.subProcess.triggeredByEvent = true;
     }
 }
+exports.EventSubprocessBuilder = EventSubprocessBuilder;
 // Transaction SubProcess Builder
-export class TransactionSubprocessBuilder extends BaseSubprocessBuilder {
+class TransactionSubprocessBuilder extends BaseSubprocessBuilder {
     compensate() {
         this.subProcess.method = '##compensate';
         return this;
@@ -44,8 +50,9 @@ export class TransactionSubprocessBuilder extends BaseSubprocessBuilder {
         return this;
     }
 }
+exports.TransactionSubprocessBuilder = TransactionSubprocessBuilder;
 // Ad-hoc SubProcess Builder
-export class AdHocSubprocessBuilder extends BaseSubprocessBuilder {
+class AdHocSubprocessBuilder extends BaseSubprocessBuilder {
     completionCondition(condition) {
         this.subProcess.completionCondition = condition;
         return this;
@@ -63,8 +70,9 @@ export class AdHocSubprocessBuilder extends BaseSubprocessBuilder {
         return this;
     }
 }
+exports.AdHocSubprocessBuilder = AdHocSubprocessBuilder;
 // Lane Set Builder
-export class LaneSetBuilder {
+class LaneSetBuilder {
     context;
     laneSet;
     constructor(context, laneSet) {
@@ -82,8 +90,9 @@ export class LaneSetBuilder {
         return new LaneBuilder(this.context, lane);
     }
 }
+exports.LaneSetBuilder = LaneSetBuilder;
 // Lane Builder
-export class LaneBuilder {
+class LaneBuilder {
     context;
     lane;
     constructor(context, lane) {
@@ -95,8 +104,9 @@ export class LaneBuilder {
         return this;
     }
 }
+exports.LaneBuilder = LaneBuilder;
 // Collaboration Builder (for multi-pool processes)
-export class CollaborationBuilder {
+class CollaborationBuilder {
     context;
     collaborationName;
     participants = [];
@@ -126,8 +136,9 @@ export class CollaborationBuilder {
         return new MessageFlowBuilder(this.context, flow);
     }
 }
+exports.CollaborationBuilder = CollaborationBuilder;
 // Participant Builder
-export class ParticipantBuilder {
+class ParticipantBuilder {
     context;
     participant;
     constructor(context, participant) {
@@ -139,8 +150,9 @@ export class ParticipantBuilder {
         return this;
     }
 }
+exports.ParticipantBuilder = ParticipantBuilder;
 // Message Flow Builder
-export class MessageFlowBuilder {
+class MessageFlowBuilder {
     context;
     flow;
     constructor(context, flow) {
@@ -152,4 +164,5 @@ export class MessageFlowBuilder {
         return this;
     }
 }
+exports.MessageFlowBuilder = MessageFlowBuilder;
 //# sourceMappingURL=subprocess.js.map

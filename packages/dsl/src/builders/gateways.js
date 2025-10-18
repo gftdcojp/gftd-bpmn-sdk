@@ -1,7 +1,10 @@
+"use strict";
 // Merkle DAG: dsl_gateway_builders
 // DSL Gateway Builders - Exclusive/Inclusive/Parallel/EventBased/Complex
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SequenceFlowBuilder = exports.ComplexGatewayBuilder = exports.EventBasedGatewayBuilder = exports.ParallelGatewayBuilder = exports.InclusiveGatewayBuilder = exports.ExclusiveGatewayBuilder = exports.BaseGatewayBuilder = void 0;
 // Base Gateway Builder
-export class BaseGatewayBuilder {
+class BaseGatewayBuilder {
     context;
     gateway;
     constructor(context, gateway) {
@@ -13,17 +16,21 @@ export class BaseGatewayBuilder {
         return this;
     }
 }
+exports.BaseGatewayBuilder = BaseGatewayBuilder;
 // Exclusive Gateway Builder (XOR)
-export class ExclusiveGatewayBuilder extends BaseGatewayBuilder {
+class ExclusiveGatewayBuilder extends BaseGatewayBuilder {
 }
+exports.ExclusiveGatewayBuilder = ExclusiveGatewayBuilder;
 // Inclusive Gateway Builder (OR)
-export class InclusiveGatewayBuilder extends BaseGatewayBuilder {
+class InclusiveGatewayBuilder extends BaseGatewayBuilder {
 }
+exports.InclusiveGatewayBuilder = InclusiveGatewayBuilder;
 // Parallel Gateway Builder (AND)
-export class ParallelGatewayBuilder extends BaseGatewayBuilder {
+class ParallelGatewayBuilder extends BaseGatewayBuilder {
 }
+exports.ParallelGatewayBuilder = ParallelGatewayBuilder;
 // Event-based Gateway Builder
-export class EventBasedGatewayBuilder extends BaseGatewayBuilder {
+class EventBasedGatewayBuilder extends BaseGatewayBuilder {
     instantiate(instantiate = true) {
         this.gateway.instantiate = instantiate;
         return this;
@@ -37,15 +44,17 @@ export class EventBasedGatewayBuilder extends BaseGatewayBuilder {
         return this;
     }
 }
+exports.EventBasedGatewayBuilder = EventBasedGatewayBuilder;
 // Complex Gateway Builder
-export class ComplexGatewayBuilder extends BaseGatewayBuilder {
+class ComplexGatewayBuilder extends BaseGatewayBuilder {
     activationCondition(condition) {
         this.gateway.activationCondition = condition;
         return this;
     }
 }
+exports.ComplexGatewayBuilder = ComplexGatewayBuilder;
 // Sequence Flow Builder for conditional flows
-export class SequenceFlowBuilder {
+class SequenceFlowBuilder {
     context;
     flow;
     constructor(context, flow) {
@@ -61,4 +70,5 @@ export class SequenceFlowBuilder {
         return this;
     }
 }
+exports.SequenceFlowBuilder = SequenceFlowBuilder;
 //# sourceMappingURL=gateways.js.map

@@ -14,6 +14,12 @@ export class BaseEventBuilder {
     this.event = event;
   }
 
+  // Set event name
+  name(name: string): this {
+    this.event.name = name;
+    return this;
+  }
+
   // Common event configurations
   message(messageRef?: string): this {
     this.event.eventDefinitions = this.event.eventDefinitions || [];
@@ -138,6 +144,11 @@ export class IntermediateCatchEventBuilder extends BaseEventBuilder {
 
 // Boundary Event Builder
 export class BoundaryEventBuilder extends BaseEventBuilder {
+  attachedToRef(activityId: string): this {
+    (this.event as any).attachedToRef = activityId;
+    return this;
+  }
+
   nonInterrupting(): this {
     // Mutable cast for building
     (this.event as any).cancelActivity = false;

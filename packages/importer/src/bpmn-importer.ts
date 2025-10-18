@@ -1,8 +1,9 @@
 // Merkle DAG: bpmn_importer
 // BPMN XML → IR Importer (reverse compiler)
 
-import BpmnModdle from 'bpmn-moddle';
-import { fromXML } from 'moddle-xml';
+// Mock implementation for now - TODO: Implement full moddle integration
+// import BpmnModdle from 'bpmn-moddle';
+// import { fromXML } from 'moddle-xml';
 import type {
   BpmnIR,
   DefinitionsIR,
@@ -314,4 +315,8 @@ export class BpmnImporter {
 export async function importFromXml(xml: string): Promise<BpmnIR> {
   const importer = new BpmnImporter();
   return importer.importFromXml(xml);
+}
+
+export async function parseXml(xml: string): Promise<BpmnIR> {
+  return importFromXml(xml);
 }

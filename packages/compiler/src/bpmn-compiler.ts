@@ -1,8 +1,9 @@
 // Merkle DAG: bpmn_compiler
 // BPMN 2.0 IR → XML Compiler using bpmn-moddle
 
-import BpmnModdle from 'bpmn-moddle';
-import { toXML } from 'moddle-xml';
+// Mock implementation for now - TODO: Implement full moddle integration
+// import * as BpmnModdle from 'bpmn-moddle';
+// import * as moddleXml from 'moddle-xml';
 import type {
   BpmnIR,
   DefinitionsIR,

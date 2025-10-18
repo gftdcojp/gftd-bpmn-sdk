@@ -59,7 +59,7 @@ export class HumanTaskManager {
       candidateUsers: options.candidateUsers,
       candidateGroups: options.candidateGroups,
       dueDate: options.dueDate,
-      status: options.assignee ? 'reserved' : 'ready',
+      status: 'created',
       createdAt: now,
       variables: options.variables,
       formKey: options.formKey,
@@ -119,7 +119,7 @@ export class HumanTaskManager {
       throw new Error(`Task ${taskId} not found`);
     }
 
-    if (task.status !== 'ready') {
+    if (task.status !== 'created' && task.status !== 'ready') {
       throw new Error(`Task ${taskId} is not claimable`);
     }
 
@@ -168,7 +168,7 @@ export class HumanTaskManager {
 
     const now = new Date();
     task.assignee = assignee;
-    task.status = 'reserved';
+    task.status = 'created';
 
     const assignment: TaskAssignment = {
       taskId,
@@ -204,7 +204,7 @@ export class HumanTaskManager {
       throw new Error(`Task ${taskId} is not assigned to user ${userId}`);
     }
 
-    if (task.status !== 'in_progress') {
+    if (task.status !== 'in_progress' && task.status !== 'reserved') {
       throw new Error(`Task ${taskId} is not in progress`);
     }
 
@@ -361,5 +361,61 @@ export class HumanTaskManager {
    */
   offEvent(listener: (event: TaskEvent) => void): void {
     this.eventListeners.delete(listener);
+  }
+
+  /**
+   * タスクIDでタスクを取得
+   */
+  async getTaskById(taskId: string): Promise<HumanTask | null> {
+    return this.tasks.get(taskId) || null;
+  }
+
+  /**
+   * タスクを再割当
+   */
+  async reassignTask(taskId: string, newAssignee: string): Promise<void> {
+    const task = this.tasks.get(taskId);
+    if (!task) {
+      throw new Error(`Task ${taskId} not found`);
+    }
+
+    const oldAssignee = task.assignee;
+    task.assignee = newAssignee;
+    task.status = 'created'; // 再割当時はステータスをリセット
+    task.claimedBy = undefined;
+    task.claimedAt = undefined;
+
+    // コメントを追加
+    if (oldAssignee) {
+      this.addComment(taskId, 'system', `Task reassigned from ${oldAssignee} to ${newAssignee}`);
+    } else {
+      this.addComment(taskId, 'system', `Task assigned to ${newAssignee}`);
+    }
+
+    this.emitEvent({
+      type: 'task.reassigned',
+      taskId,
+      oldAssignee,
+      newAssignee,
+      timestamp: new Date(),
+    });
+  }
+
+  /**
+   * SLA違反を取得
+   */
+  getSlaViolations(): Array<{ taskId: string; violation: 'warning' | 'breach' }> {
+    const violations: Array<{ taskId: string; violation: 'warning' | 'breach' }> = [];
+    const now = Date.now();
+
+    for (const [taskId, sla] of this.slas) {
+      if (sla.breachTime && now > sla.breachTime.getTime()) {
+        violations.push({ taskId, violation: 'breach' });
+      } else if (sla.warningTime && now > sla.warningTime.getTime()) {
+        violations.push({ taskId, violation: 'warning' });
+      }
+    }
+
+    return violations;
   }
 }

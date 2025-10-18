@@ -148,14 +148,25 @@ export class BpmnRuntime {
    * Get execution context (placeholder)
    */
   async getExecutionContext(processId: string, instanceId: string): Promise<ExecutionContext | null> {
-    // Placeholder implementation
+    // Check if process exists
+    if (!this.processes.has(processId)) {
+      return null;
+    }
+
+    // Check if instance exists
+    const instances = this.instances.get(processId);
+    if (!instances || !instances.has(instanceId)) {
+      return null;
+    }
+
+    const instance = instances.get(instanceId)!;
     return {
       processId,
       instanceId,
-      variables: {},
-      status: 'running',
-      currentActivities: [],
-      startTime: new Date(),
+      variables: instance.variables,
+      status: instance.status,
+      currentActivities: instance.currentActivities,
+      startTime: instance.startTime,
     };
   }
 

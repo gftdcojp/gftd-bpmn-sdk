@@ -491,6 +491,14 @@ export class BpmnValidator {
   }
 }
 
+  /**
+   * BPMN IR全体を検証
+   */
+  async validateBpmnIR(ir: BpmnIR): Promise<ValidationResult> {
+    return this.validateProcess(ir);
+  }
+}
+
 // 便利関数
 export async function validateProcess(ir: BpmnIR, options?: ValidationOptions): Promise<ValidationResult> {
   const validator = new BpmnValidator(options);

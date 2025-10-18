@@ -9,7 +9,10 @@ docs/
 ├── index.html          # Main documentation page
 ├── .nojekyll          # Disables Jekyll processing
 ├── README.md          # This file
-└── api/               # TypeDoc generated API documentation (coming soon)
+└── api/               # TypeDoc generated API documentation
+    ├── index.html     # API documentation entry point
+    ├── assets/        # CSS, JS, and other assets
+    └── [modules]/     # Individual package documentation
 ```
 
 ## 🚀 GitHub Pages Setup
@@ -40,12 +43,28 @@ https://gftdcojp.github.io/gftd-bpmn-sdk/
 To preview the documentation locally:
 
 ```bash
+# Generate API docs first
+pnpm docs
+
 # Serve the docs directory
 npx http-server docs -p 8080
 
 # Or using the npm script
 pnpm docs:serve
 ```
+
+### Automated Deployment
+
+The documentation is automatically deployed via GitHub Actions when:
+
+- Code is pushed to the `main` branch
+- Files in `packages/`, `typedoc.json`, `README.md`, or the workflow file are modified
+- The workflow is manually triggered
+
+The deployment workflow:
+1. Builds all packages
+2. Generates TypeDoc API documentation
+3. Deploys the entire `docs/` directory to GitHub Pages
 
 ## 🔧 Configuration
 
@@ -69,8 +88,8 @@ To use a custom domain:
 ## 📊 Status
 
 - ✅ Basic documentation page created
-- 🔄 API documentation generation (TypeDoc)
-- 🔄 Automated deployment pipeline
+- ✅ API documentation generation (TypeDoc)
+- ✅ Automated deployment pipeline (GitHub Actions)
 
 ## 🤝 Contributing
 

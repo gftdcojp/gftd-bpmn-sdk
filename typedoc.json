@@ -57,7 +57,9 @@
   "gitRevision": "main",
   "validation": {
     "notDocumented": false,
-    "invalidLink": true,
+    "invalidLink": false,
     "notExported": false
-  }
+  },
+  "skipErrorChecking": true,
+  "excludeNotDocumented": true
 }

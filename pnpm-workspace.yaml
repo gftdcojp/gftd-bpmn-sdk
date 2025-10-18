@@ -1,4 +1,8 @@
 packages:
   - 'packages/*'
   - 'examples/*'
+  - 'packages/human'
+  - 'packages/validation'
+  - 'packages/testing'
+  - 'packages/ops'
   - 'packages/importer'

@@ -27,10 +27,10 @@
 ├── ✅ compiler/       # IR → BPMN 2.0 XML (bpmn-moddle based)
 ├── ✅ importer/       # BPMN XML → IR (reverse compilation)
 ├── ✅ runtime/        # bpmn-engine integration & execution
-├── 🔄 human/          # Human task management (planned)
-├── 🔄 validation/     # Static validation & verification (planned)
-├── 🔄 testing/        # Property-based testing framework (planned)
-├── 🔄 ops/            # Monitoring, versioning, & operations (planned)
+├── ✅ human/          # Human task management & SLA
+├── ✅ validation/     # Static validation & reachability analysis
+├── ✅ testing/        # Property-based testing framework
+├── ✅ ops/            # OpenTelemetry monitoring & operations
 └── ✅ examples/       # Usage examples & E2E tests
 ```
 
@@ -117,6 +117,11 @@ import { validateProcess } from '@gftd/bpmn-sdk/validation';
 
 const result = validateProcess(invoiceProcess);
 // → { valid: true } or { valid: false, errors: [...] }
+
+// 詳細な検証レポート
+console.log(`Errors: ${result.errors.length}`);
+console.log(`Warnings: ${result.warnings.length}`);
+console.log(`Complexity Score: ${result.statistics.complexityScore}`);
 ```
 
 ### Human Task Management
@@ -124,29 +129,77 @@ const result = validateProcess(invoiceProcess);
 import { HumanTaskManager } from '@gftd/bpmn-sdk/human';
 
 const taskManager = new HumanTaskManager(runtime);
-await taskManager.claim(taskId, 'user123');
-await taskManager.complete(taskId, { decision: 'approved' });
+
+// タスクの作成
+const task = await taskManager.createTask(
+  'process_123',
+  'instance_456',
+  'review_activity',
+  {
+    name: 'Review Invoice',
+    assignee: 'accountant@example.com',
+    dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24時間後
+    slaDefinition: { duration: 4 * 60 * 60 * 1000 } // 4時間SLA
+  }
+);
+
+// タスクの請求と完了
+await taskManager.claimTask(task.id, 'accountant@example.com');
+await taskManager.completeTask(task.id, 'accountant@example.com', {
+  decision: 'approved',
+  comments: 'Invoice approved for payment'
+});
 ```
 
 ### Monitoring & Observability
 ```typescript
 import { BpmnMonitor } from '@gftd/bpmn-sdk/ops';
 
-const monitor = new BpmnMonitor();
-monitor.onEvent((event) => {
-  // Send to OpenTelemetry, DataDog, etc.
+const monitor = new BpmnMonitor({
+  serviceName: 'bpmn-service',
+  metrics: { enabled: true, interval: 60000 },
+  otel: { endpoint: 'http://jaeger:14268/api/traces' }
 });
+
+// ランタイムに監視をアタッチ
+monitor.attachToRuntime(runtime);
+
+// パフォーマンス監視
+const snapshot = await monitor.getPerformanceSnapshot();
+console.log(`Active instances: ${snapshot.metrics.activeInstances}`);
+console.log(`Average duration: ${snapshot.metrics.averageDuration}ms`);
+
+// ヘルスチェック
+const health = await monitor.getHealthStatus();
+console.log(`System health: ${health.status}`);
 ```
 
 ### Testing Framework
 ```typescript
-import { bpmnPropertyTest } from '@gftd/bpmn-sdk/testing';
+import { bpmnPropertyTest, bpmnScenarioTest } from '@gftd/bpmn-sdk/testing';
 
-// Property-based testing for process correctness
-const testResult = await bpmnPropertyTest(invoiceProcess, {
-  invariant: 'noDeadEnds',
-  coverage: 'allPaths'
-});
+// プロパティベーステスト
+const propertyResult = await bpmnPropertyTest(
+  runtime,
+  invoiceProcess,
+  'noDeadEnds',
+  { maxTestCases: 50 }
+);
+console.log(`Property test passed: ${propertyResult.success}`);
+
+// シナリオテスト
+const scenarioResult = await bpmnScenarioTest(
+  runtime,
+  invoiceProcess,
+  {
+    id: 'approval_flow',
+    description: 'Complete approval workflow',
+    inputs: { amount: 500 },
+    expectedPath: ['StartEvent', 'ReviewTask', 'ServiceTask', 'EndEvent'],
+    expectedOutputs: { approved: true }
+  }
+);
+console.log(`Scenario test passed: ${scenarioResult.success}`);
 ```
 
 ## 🏗️ Development

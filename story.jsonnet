@@ -13,7 +13,7 @@ local nodes = {
     description: 'モノレポ雛形作成 (pnpm workspaces + turborepo)',
     dependencies: [],
     outputs: ['package.json', 'pnpm-workspace.yaml', 'turbo.json'],
-    status: 'pending',
+    status: 'completed',
   },
 
   setup_typescript: {
@@ -22,7 +22,7 @@ local nodes = {
     description: 'TypeScript + Biome設定',
     dependencies: ['setup_monorepo'],
     outputs: ['tsconfig.json', 'biome.json'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // Core Layer (BPMN 2.0 Foundation)
@@ -32,7 +32,7 @@ local nodes = {
     description: 'BPMN 2.0 要素の型定義 (完全網羅)',
     dependencies: ['setup_typescript'],
     outputs: ['packages/core/src/types/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   core_ir: {
@@ -40,7 +40,7 @@ local nodes = {
     description: '内部表現 (IR) とユーティリティ',
     dependencies: ['core_types'],
     outputs: ['packages/core/src/ir/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // DSL Layer (TypeScript Builder)
@@ -49,7 +49,7 @@ local nodes = {
     description: '宣言DSLの実装 (flow/events/tasks/gateways/subprocess)',
     dependencies: ['core_ir'],
     outputs: ['packages/dsl/src/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // Compiler Layer (IR ↔ BPMN XML)
@@ -58,7 +58,7 @@ local nodes = {
     description: 'IR → BPMN 2.0 XML (bpmn-moddle ベース)',
     dependencies: ['core_ir', 'dsl_builder'],
     outputs: ['packages/compiler/src/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   importer_xml: {
@@ -66,7 +66,7 @@ local nodes = {
     description: 'BPMN XML → IR (逆変換)',
     dependencies: ['core_ir', 'compiler_xml'],
     outputs: ['packages/importer/src/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // Runtime Layer (bpmn-engine integration)
@@ -75,7 +75,7 @@ local nodes = {
     description: 'bpmn-engine との統合 (deploy/start/signal/timer)',
     dependencies: ['compiler_xml'],
     outputs: ['packages/runtime/src/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // Human Task Layer
@@ -84,7 +84,7 @@ local nodes = {
     description: 'ヒューマンタスクAPI (割当/SLA/操作)',
     dependencies: ['runtime_engine'],
     outputs: ['packages/human/src/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // Validation Layer
@@ -93,7 +93,7 @@ local nodes = {
     description: '静的検証 (到達性/整合性/条件網羅)',
     dependencies: ['core_ir'],
     outputs: ['packages/validation/src/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // Testing Layer
@@ -102,7 +102,7 @@ local nodes = {
     description: 'プロパティテスト/準同型チェック',
     dependencies: ['validation_static', 'runtime_engine'],
     outputs: ['packages/testing/src/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // Ops Layer
@@ -111,7 +111,7 @@ local nodes = {
     description: 'OpenTelemetry統合/監査イベント',
     dependencies: ['runtime_engine'],
     outputs: ['packages/ops/src/'],
-    status: 'pending',
+    status: 'completed',
   },
 
   // E2E Integration Test
@@ -120,16 +120,48 @@ local nodes = {
     description: '最小スコープE2E (Start/User/Service/XOR/Timer/BoundaryError/CallActivity)',
     dependencies: ['dsl_builder', 'compiler_xml', 'importer_xml', 'runtime_engine'],
     outputs: ['examples/e2e-minimal/'],
-    status: 'pending',
+    status: 'completed',
+  },
+
+  e2e_integration: {
+    id: 'e2e_integration',
+    description: '拡張E2E (human tasks, validation, testing, monitoring)',
+    dependencies: ['human_tasks', 'validation_static', 'testing_framework', 'ops_monitoring'],
+    outputs: ['examples/e2e-integration/'],
+    status: 'completed',
+  },
+
+  e2e_order_processing: {
+    id: 'e2e_order_processing',
+    description: '実世界例: 注文処理ワークフロー',
+    dependencies: ['e2e_integration'],
+    outputs: ['examples/order-processing/'],
+    status: 'completed',
   },
 
   // Documentation & Examples
   docs_readme: {
     id: 'docs_readme',
     description: 'READMEと基本ドキュメント',
-    dependencies: ['e2e_minimal'],
+    dependencies: ['e2e_order_processing'],
     outputs: ['README.md', 'docs/'],
-    status: 'pending',
+    status: 'completed',
+  },
+
+  docs_api: {
+    id: 'docs_api',
+    description: 'TypeDoc APIドキュメント生成',
+    dependencies: ['docs_readme'],
+    outputs: ['docs/api/'],
+    status: 'completed',
+  },
+
+  ci_cd: {
+    id: 'ci_cd',
+    description: 'GitHub Actions CI/CDパイプライン',
+    dependencies: ['docs_api'],
+    outputs: ['.github/workflows/'],
+    status: 'completed',
   },
 };
 

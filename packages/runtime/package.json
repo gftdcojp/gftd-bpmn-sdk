@@ -1,0 +1,34 @@
+{
+  "name": "@gftd/bpmn-sdk/runtime",
+  "version": "0.1.0",
+  "description": "BPMN runtime integration with bpmn-engine",
+  "license": "Apache-2.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@gftd/bpmn-sdk/core": "workspace:*",
+    "@gftd/bpmn-sdk/compiler": "workspace:*",
+    "bpmn-engine": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist"
+  ]
+}

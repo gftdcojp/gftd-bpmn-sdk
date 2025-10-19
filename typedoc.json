@@ -11,6 +11,7 @@
     "packages/testing/src/index.ts",
     "packages/ops/src/index.ts",
     "packages/form/src/index.ts"
+    ,"packages/dmn/src/index.ts"
   ],
   "out": "docs/api",
   "name": "@gftd/bpmn-sdk API Documentation",

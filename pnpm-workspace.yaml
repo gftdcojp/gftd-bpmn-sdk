@@ -6,3 +6,4 @@ packages:
   - 'packages/testing'
   - 'packages/ops'
   - 'packages/importer'
+  - 'packages/form'

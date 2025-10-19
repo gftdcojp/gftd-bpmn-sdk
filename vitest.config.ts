@@ -34,6 +34,7 @@ export default defineConfig({
       '@gftd/bpmn-sdk/validation': resolve('./packages/validation/src'),
       '@gftd/bpmn-sdk/testing': resolve('./packages/testing/src'),
       '@gftd/bpmn-sdk/ops': resolve('./packages/ops/src'),
+      '@gftd/bpmn-sdk/form': resolve('./packages/form/src'),
     },
   },
 });

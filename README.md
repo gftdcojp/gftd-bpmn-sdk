@@ -82,6 +82,7 @@
 | **validation** | Static validation (reachability analysis, structural checks) | 0% | core |
 | **testing** | Property-based testing framework with Vitest | ~51% | core, runtime, validation |
 | **ops** | OpenTelemetry monitoring and operations | ~74% | core, runtime |
+| **form** | form-js 型安全ラッパー（Viewer/Editor/Playground） | new | external: @bpmn-io/form-js |
 
 ## 🚀 Quick Start
 
@@ -693,6 +694,9 @@ pnpm --filter order-processing start
 
 # Run basic example
 pnpm --filter e2e-minimal start
+
+# Run form-js minimal example
+pnpm --filter @gftd/bpmn-sdk-example/form-js-minimal start
 ```
 
 ### 📖 Learning Path
@@ -745,6 +749,54 @@ runtime.sendMessage(processId, instanceId, messageId, payload?)
 ```typescript
 runtime.onEvent(listener: (event: RuntimeEvent) => void)
 ```
+
+### Forms（form-js Integration）
+
+`@bpmn-io/form-js` を型安全に扱うためのラッパーを提供します（Viewer / Editor / Playground）。SSR（RSC）では使用不可のため、必ずクライアント環境で実行してください。[参考: form-js リポジトリ](https://github.com/bpmn-io/form-js/tree/develop)
+
+インストール:
+
+```bash
+pnpm add @gftd/bpmn-sdk/form
+```
+
+Viewer 最小例:
+
+```ts
+import { createForm } from '@gftd/bpmn-sdk/form';
+
+const container = document.getElementById('app')!;
+const schema = { components: [] } as any;
+
+const form = await createForm({ container, schema });
+form.onSubmit(({ data, errors }) => {
+  console.log(data, errors);
+});
+```
+
+Editor 最小例:
+
+```ts
+import { createFormEditor } from '@gftd/bpmn-sdk/form';
+await createFormEditor({ container, schema });
+```
+
+Playground 最小例:
+
+```ts
+import { createFormPlayground } from '@gftd/bpmn-sdk/form';
+await createFormPlayground({ container, schema, data: {} });
+```
+
+スキーマ変数の取得:
+
+```ts
+import { FormUtils } from '@gftd/bpmn-sdk/form';
+
+const variables = FormUtils.getSchemaVariables(schema); // string[] | { inputs; outputs }
+```
+
+注意: 本パッケージはブラウザ環境を要求します。Next.js App Router の RSC では直接呼び出さず、`use client` なファイルから利用してください。
 
 ## 🤝 Contributing
 

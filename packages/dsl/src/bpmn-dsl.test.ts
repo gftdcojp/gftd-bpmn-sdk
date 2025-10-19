@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { flow, FlowBuilder, ProcessBuilder } from './bpmn-dsl';
 
-describe.skip('@gftd/bpmn-sdk/dsl', () => {
+describe('@gftd/bpmn-sdk/dsl', () => {
   describe('flow()', () => {
     it('should create a basic process', () => {
       const result = flow('TestProcess', f => {

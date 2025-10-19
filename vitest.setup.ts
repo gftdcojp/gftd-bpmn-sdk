@@ -69,7 +69,7 @@ vi.mock('bpmn-moddle', () => ({
 
 vi.mock('moddle-xml', () => ({
   toXML: vi.fn().mockImplementation((obj, options) => Promise.resolve({ xml: '<xml>test</xml>' })),
-  fromXML: vi.fn().mockResolvedValue({
+  fromXML: vi.fn().mockImplementation((xml, options) => Promise.resolve({
     root: {
       $type: 'bpmn:Definitions',
       id: 'Definitions_1',
@@ -85,7 +85,7 @@ vi.mock('moddle-xml', () => ({
       ],
       version: '1.0',
     },
-  }),
+  })),
 }));
 
 // Global test utilities

@@ -3,7 +3,7 @@
 import { validateProcess } from '@gftd/bpmn-sdk/validation';
 import { flow } from '@gftd/bpmn-sdk/dsl';
 
-describe.skip('Static Validation Integration', () => {
+describe('Static Validation Integration', () => {
   test('should validate correct process', async () => {
     const validProcess = flow('ValidProcess', f => f
       .process('ValidProcess', p => p

@@ -4,7 +4,7 @@ import { BpmnRuntime } from '@gftd/bpmn-sdk/runtime';
 import { BpmnMonitor } from '@gftd/bpmn-sdk/ops';
 import { flow } from '@gftd/bpmn-sdk/dsl';
 
-describe.skip('Monitoring Integration', () => {
+describe('Monitoring Integration', () => {
   let runtime: BpmnRuntime;
   let monitor: BpmnMonitor;
   let testProcess: any;

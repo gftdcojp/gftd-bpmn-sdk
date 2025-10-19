@@ -1,10 +1,7 @@
-"use strict";
 // Merkle DAG: bpmn_internal_representation
 // BPMN 2.0 内部表現 (IR) - DSL → XML 変換の中間層
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BpmnIRUtils = void 0;
 // Utility functions for IR manipulation
-class BpmnIRUtils {
+export class BpmnIRUtils {
     static generateId(prefix = 'id') {
         return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
@@ -32,5 +29,4 @@ class BpmnIRUtils {
         };
     }
 }
-exports.BpmnIRUtils = BpmnIRUtils;
 //# sourceMappingURL=bpmn-ir.js.map

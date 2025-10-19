@@ -21,10 +21,13 @@
     "format": "biome format --write .",
     "clean": "rm -rf dist"
   },
-  "dependencies": {},
+  "dependencies": {
+    "fast-check": "^3.17.1"
+  },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "@gftd/bpmn-sdk/core": "workspace:*",

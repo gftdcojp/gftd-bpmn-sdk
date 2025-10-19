@@ -53,8 +53,30 @@ describe('@gftd/bpmn-sdk/runtime', () => {
 
         const processId = await runtime.deployProcess(ir as any);
 
-        expect(typeof processId).toBe('string');
-        expect(processId.length).toBeGreaterThan(0);
+        expect(processId).toBe('TestProcess');
+      });
+
+      it('should throw error if no process ID found', async () => {
+        const ir = {
+          definitions: {
+            processes: []
+          }
+        };
+
+        await expect(runtime.deployProcess(ir as any)).rejects.toThrow('No process ID found in BPMN IR');
+      });
+
+      it('should throw error if process has no ID', async () => {
+        const ir = {
+          definitions: {
+            processes: [{
+              flowElements: [],
+              sequenceFlows: []
+            }]
+          }
+        };
+
+        await expect(runtime.deployProcess(ir as any)).rejects.toThrow('No process ID found in BPMN IR');
       });
 
       it('should handle multiple processes', async () => {

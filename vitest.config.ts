@@ -40,6 +40,7 @@ export default defineConfig({
       '@gftd/bpmn-sdk/ops': resolve('./packages/ops/src'),
       '@gftd/bpmn-sdk/form': resolve('./packages/form/src'),
       '@gftd/bpmn-sdk/dmn': resolve('./packages/dmn/src'),
+      '@gftd/bpmn-sdk/testkit': resolve('./packages/internal/testkit/src'),
     },
   },
 });

@@ -2,8 +2,8 @@
 // BPMN XML → IR Importer (reverse compiler)
 
 // Mock implementation for now - TODO: Implement full moddle integration
-// import BpmnModdle from 'bpmn-moddle';
-// import { fromXML } from 'moddle-xml';
+import BpmnModdle from 'bpmn-moddle';
+import { fromXML } from 'moddle-xml';
 import type {
   BpmnIR,
   DefinitionsIR,
@@ -24,6 +24,14 @@ export class BpmnImporter {
 
   constructor() {
     this.moddle = new BpmnModdle();
+  }
+
+  /**
+   * Parse XML to BPMN definitions
+   */
+  async parseXml(xml: string): Promise<any> {
+    const { rootElement } = await fromXML(xml, { moddle: this.moddle });
+    return rootElement;
   }
 
   /**

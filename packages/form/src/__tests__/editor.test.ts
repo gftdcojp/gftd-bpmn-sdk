@@ -9,7 +9,7 @@ describe('form editor', () => {
   });
 
   it('imports schema', async () => {
-    const schema = { components: [] } as any;
+    const schema = { type: 'default', components: [] } as any;
     const editor = await createFormEditor({ container, schema });
     expect(typeof editor.importSchema).toBe('function');
     editor.destroy();

@@ -83,6 +83,7 @@
 | **testing** | Property-based testing framework with Vitest | ~51% | core, runtime, validation |
 | **ops** | OpenTelemetry monitoring and operations | ~74% | core, runtime |
 | **form** | form-js 型安全ラッパー（Viewer/Editor/Playground） | new | external: @bpmn-io/form-js |
+| **dmn** | dmn-js 型安全ラッパー（Viewer） | new | external: dmn-js |
 
 ## 🚀 Quick Start
 
@@ -697,6 +698,9 @@ pnpm --filter e2e-minimal start
 
 # Run form-js minimal example
 pnpm --filter @gftd/bpmn-sdk-example/form-js-minimal start
+
+# Run dmn-js minimal example
+pnpm --filter @gftd/bpmn-sdk-example/dmn-js-minimal start
 ```
 
 ### 📖 Learning Path
@@ -797,6 +801,27 @@ const variables = FormUtils.getSchemaVariables(schema); // string[] | { inputs; 
 ```
 
 注意: 本パッケージはブラウザ環境を要求します。Next.js App Router の RSC では直接呼び出さず、`use client` なファイルから利用してください。
+
+### DMN（dmn-js Integration）
+
+`dmn-js` の Viewer を型付きで扱うラッパーを提供します。DMN 1.3 の XML をブラウザで描画します。[参考: dmn-js リポジトリ](https://github.com/bpmn-io/dmn-js)
+
+インストール:
+
+```bash
+pnpm add @gftd/bpmn-sdk/dmn
+```
+
+最小例:
+
+```ts
+import { createDmnViewer } from '@gftd/bpmn-sdk/dmn';
+
+const viewer = await createDmnViewer({ container: document.getElementById('app')! });
+await viewer.importXML('<definitions ...>...</definitions>');
+```
+
+注意: 本パッケージもブラウザ環境を要求します。SSRでは直接使用せず、クライアント側で実行してください。
 
 ## 🤝 Contributing
 

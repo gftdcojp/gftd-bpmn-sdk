@@ -17,7 +17,7 @@
     "clean": "rimraf dist",
     "lint": "biome check .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run -c ../../vitest.config.ts"
   },
   "dependencies": {
     "dmn-js": "^17.4.0"

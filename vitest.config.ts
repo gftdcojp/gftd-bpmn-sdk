@@ -1,12 +1,16 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vitest/config';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'node:url';
+
+const rootDir = dirname(fileURLToPath(import.meta.url));
+const r = (p: string) => resolve(rootDir, p);
 
 export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: ['./vitest.setup.ts'],
+    setupFiles: [r('./vitest.setup.ts')],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

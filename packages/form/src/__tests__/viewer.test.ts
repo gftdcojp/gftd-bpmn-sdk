@@ -9,7 +9,7 @@ describe('form viewer', () => {
   });
 
   it('imports schema and submits', async () => {
-    const schema = { components: [] } as any;
+    const schema = { type: 'default', components: [] } as any;
     const form = await createForm({ container, schema });
 
     let submitted = false;

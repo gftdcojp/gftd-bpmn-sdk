@@ -1,3 +1,4 @@
+/// <reference path="./types.d.ts" />
 import { assertClient } from "./ssr";
 import DmnJS from "dmn-js";
 import type { CreateDmnViewerOptions, DmnViewerHandle } from "./types";

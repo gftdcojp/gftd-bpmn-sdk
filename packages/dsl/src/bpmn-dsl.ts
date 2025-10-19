@@ -223,252 +223,234 @@ export class ProcessBuilder {
   }
 
   // Events
-  startEvent(name?: string): StartEventBuilder {
-    const eventId = this.context.generateId('StartEvent');
+  startEvent(id: string, name?: string): this {
     const event: MutableEventIR = {
       type: 'event',
       eventType: 'start',
-      id: eventId,
+      id,
       name,
     };
     this.elements.push(event as EventIR);
-    this.context.addElement(eventId, event);
-    return new StartEventBuilder(this.context, event as EventIR);
+    this.context.addElement(id, event);
+    return this;
   }
 
-  endEvent(name?: string): EndEventBuilder {
-    const eventId = this.context.generateId('EndEvent');
+  endEvent(id: string, name?: string): this {
     const event: MutableEventIR = {
       type: 'event',
       eventType: 'end',
-      id: eventId,
+      id,
       name,
     };
     this.elements.push(event as EventIR);
-    this.context.addElement(eventId, event);
-    return new EndEventBuilder(this.context, event as EventIR);
+    this.context.addElement(id, event);
+    return this;
   }
 
-  intermediateCatchEvent(name?: string): IntermediateCatchEventBuilder {
-    const eventId = this.context.generateId('IntermediateCatchEvent');
+  intermediateCatchEvent(id: string, name?: string): this {
     const event: MutableEventIR = {
       type: 'event',
       eventType: 'intermediate',
-      id: eventId,
+      id,
       name,
     };
     this.elements.push(event as EventIR);
-    this.context.addElement(eventId, event);
-    return new IntermediateCatchEventBuilder(this.context, event as EventIR);
+    this.context.addElement(id, event);
+    return this;
   }
 
-  boundaryEvent(attachedToRef: string, name?: string): BoundaryEventBuilder {
-    const eventId = this.context.generateId('BoundaryEvent');
+  boundaryEvent(attachedToRef: string, id: string, name?: string): this {
     const event: MutableEventIR = {
       type: 'event',
       eventType: 'boundary',
-      id: eventId,
+      id,
       name,
       attachedToRef,
       cancelActivity: true, // Default to interrupting
     };
     this.elements.push(event as EventIR);
-    this.context.addElement(eventId, event);
-    return new BoundaryEventBuilder(this.context, event as EventIR);
+    this.context.addElement(id, event);
+    return this;
   }
 
   // Tasks
-  serviceTask(name?: string): ServiceTaskBuilder {
-    const taskId = this.context.generateId('ServiceTask');
+  serviceTask(id: string, name?: string): this {
     const task: MutableTaskIR = {
       type: 'task',
       taskType: 'service',
-      id: taskId,
+      id,
       name,
     };
     this.elements.push(task as TaskIR);
-    this.context.addElement(taskId, task);
-    return new ServiceTaskBuilder(this.context, task as TaskIR);
+    this.context.addElement(id, task);
+    return this;
   }
 
-  userTask(name?: string): UserTaskBuilder {
-    const taskId = this.context.generateId('UserTask');
+  userTask(id: string, name?: string): this {
     const task: MutableTaskIR = {
       type: 'task',
       taskType: 'user',
-      id: taskId,
+      id,
       name,
     };
     this.elements.push(task as TaskIR);
-    this.context.addElement(taskId, task);
-    return new UserTaskBuilder(this.context, task as TaskIR);
+    this.context.addElement(id, task);
+    return this;
   }
 
-  manualTask(name?: string): ManualTaskBuilder {
-    const taskId = this.context.generateId('ManualTask');
+  manualTask(id: string, name?: string): this {
     const task: TaskIR = {
       type: 'task',
       taskType: 'manual',
-      id: taskId,
+      id,
       name,
     };
     this.elements.push(task);
-    this.context.addElement(taskId, task);
-    return new ManualTaskBuilder(this.context, task);
+    this.context.addElement(id, task);
+    return this;
   }
 
-  scriptTask(name?: string): ScriptTaskBuilder {
-    const taskId = this.context.generateId('ScriptTask');
+  scriptTask(id: string, name?: string): this {
     const task: TaskIR = {
       type: 'task',
       taskType: 'script',
-      id: taskId,
+      id,
       name,
     };
     this.elements.push(task);
-    this.context.addElement(taskId, task);
-    return new ScriptTaskBuilder(this.context, task);
+    this.context.addElement(id, task);
+    return this;
   }
 
-  businessRuleTask(name?: string): BusinessRuleTaskBuilder {
-    const taskId = this.context.generateId('BusinessRuleTask');
+  businessRuleTask(id: string, name?: string): this {
     const task: TaskIR = {
       type: 'task',
       taskType: 'businessRule',
-      id: taskId,
+      id,
       name,
     };
     this.elements.push(task);
-    this.context.addElement(taskId, task);
-    return new BusinessRuleTaskBuilder(this.context, task);
+    this.context.addElement(id, task);
+    return this;
   }
 
-  sendTask(name?: string): SendTaskBuilder {
-    const taskId = this.context.generateId('SendTask');
+  sendTask(id: string, name?: string): this {
     const task: TaskIR = {
       type: 'task',
       taskType: 'send',
-      id: taskId,
+      id,
       name,
     };
     this.elements.push(task);
-    this.context.addElement(taskId, task);
-    return new SendTaskBuilder(this.context, task);
+    this.context.addElement(id, task);
+    return this;
   }
 
-  receiveTask(name?: string): ReceiveTaskBuilder {
-    const taskId = this.context.generateId('ReceiveTask');
+  receiveTask(id: string, name?: string): this {
     const task: TaskIR = {
       type: 'task',
       taskType: 'receive',
-      id: taskId,
+      id,
       name,
     };
     this.elements.push(task);
-    this.context.addElement(taskId, task);
-    return new ReceiveTaskBuilder(this.context, task);
+    this.context.addElement(id, task);
+    return this;
   }
 
-  callActivity(name?: string): CallActivityBuilder {
-    const taskId = this.context.generateId('CallActivity');
+  callActivity(id: string, name?: string): this {
     const task: TaskIR = {
       type: 'task',
       taskType: 'callActivity',
-      id: taskId,
+      id,
       name,
     };
     this.elements.push(task);
-    this.context.addElement(taskId, task);
-    return new CallActivityBuilder(this.context, task);
+    this.context.addElement(id, task);
+    return this;
   }
 
   // Gateways
-  exclusiveGateway(name?: string): ExclusiveGatewayBuilder {
-    const gatewayId = this.context.generateId('ExclusiveGateway');
+  exclusiveGateway(id: string, name?: string): this {
     const gateway: GatewayIR = {
       type: 'gateway',
       gatewayType: 'exclusive',
-      id: gatewayId,
+      id,
       name,
     };
     this.elements.push(gateway);
-    this.context.addElement(gatewayId, gateway);
-    return new ExclusiveGatewayBuilder(this.context, gateway);
+    this.context.addElement(id, gateway);
+    return this;
   }
 
-  inclusiveGateway(name?: string): InclusiveGatewayBuilder {
-    const gatewayId = this.context.generateId('InclusiveGateway');
+  inclusiveGateway(id: string, name?: string): this {
     const gateway: GatewayIR = {
       type: 'gateway',
       gatewayType: 'inclusive',
-      id: gatewayId,
+      id,
       name,
     };
     this.elements.push(gateway);
-    this.context.addElement(gatewayId, gateway);
-    return new InclusiveGatewayBuilder(this.context, gateway);
+    this.context.addElement(id, gateway);
+    return this;
   }
 
-  parallelGateway(name?: string): ParallelGatewayBuilder {
-    const gatewayId = this.context.generateId('ParallelGateway');
+  parallelGateway(id: string, name?: string): this {
     const gateway: GatewayIR = {
       type: 'gateway',
       gatewayType: 'parallel',
-      id: gatewayId,
+      id,
       name,
     };
     this.elements.push(gateway);
-    this.context.addElement(gatewayId, gateway);
-    return new ParallelGatewayBuilder(this.context, gateway);
+    this.context.addElement(id, gateway);
+    return this;
   }
 
-  eventBasedGateway(name?: string): EventBasedGatewayBuilder {
-    const gatewayId = this.context.generateId('EventBasedGateway');
+  eventBasedGateway(id: string, name?: string): this {
     const gateway: GatewayIR = {
       type: 'gateway',
       gatewayType: 'eventBased',
-      id: gatewayId,
+      id,
       name,
       instantiate: false,
       eventGatewayType: 'Exclusive',
     };
     this.elements.push(gateway);
-    this.context.addElement(gatewayId, gateway);
-    return new EventBasedGatewayBuilder(this.context, gateway);
+    this.context.addElement(id, gateway);
+    return this;
   }
 
-  complexGateway(name?: string): ComplexGatewayBuilder {
-    const gatewayId = this.context.generateId('ComplexGateway');
+  complexGateway(id: string, name?: string): this {
     const gateway: GatewayIR = {
       type: 'gateway',
       gatewayType: 'complex',
-      id: gatewayId,
+      id,
       name,
     };
     this.elements.push(gateway);
-    this.context.addElement(gatewayId, gateway);
-    return new ComplexGatewayBuilder(this.context, gateway);
+    this.context.addElement(id, gateway);
+    return this;
   }
 
   // Subprocesses
-  embeddedSubprocess(name?: string): EmbeddedSubprocessBuilder {
-    const subProcessId = this.context.generateId('SubProcess');
+  embeddedSubprocess(id: string, name?: string): this {
     const subProcess: SubProcessIR = {
       type: 'subprocess',
       subProcessType: 'embedded',
-      id: subProcessId,
+      id,
       name,
       flowElements: [],
       sequenceFlows: [],
     };
     this.elements.push(subProcess);
-    this.context.addElement(subProcessId, subProcess);
-    return new EmbeddedSubprocessBuilder(this.context, subProcess);
+    this.context.addElement(id, subProcess);
+    return this;
   }
 
   // Sequence flows
-  sequenceFlow(sourceRef: string, targetRef: string, name?: string): SequenceFlowBuilder {
-    const flowId = this.context.generateId('SequenceFlow');
+  sequenceFlow(sourceRef: string, targetRef: string, id?: string, name?: string): SequenceFlowBuilder {
+    const flowId = id || this.context.generateId('SequenceFlow');
     const flow: SequenceFlowIR = {
       id: flowId,
       name,

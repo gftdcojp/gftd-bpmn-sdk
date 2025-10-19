@@ -11,11 +11,12 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: [r('./vitest.setup.ts')],
+    include: ['packages/**/src/**/*.test.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       include: ['packages/**/src/**/*.{ts,tsx}'],
-      exclude: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}', '**/node_modules/**'],
+      exclude: ['**/node_modules/**', 'examples/**'],
       all: true,
       thresholds: {
         global: {

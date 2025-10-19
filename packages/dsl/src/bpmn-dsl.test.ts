@@ -85,6 +85,21 @@ describe('@gftd/bpmn-sdk/dsl', () => {
       expect((result.definitions.processes[0].flowElements[0] as any).gatewayType).toBe('exclusive');
     });
 
+    it('should support method chaining', () => {
+      const result = flow('TestProcess', f => {
+        f.process('TestProcess', p =>
+          p.startEvent('StartEvent')
+           .userTask('UserTask')
+           .endEvent('EndEvent')
+        );
+      });
+
+      expect(result.definitions.processes[0].flowElements).toHaveLength(3);
+      expect(result.definitions.processes[0].flowElements[0].id).toBe('StartEvent');
+      expect(result.definitions.processes[0].flowElements[1].id).toBe('UserTask');
+      expect(result.definitions.processes[0].flowElements[2].id).toBe('EndEvent');
+    });
+
     it('should add sequence flow', () => {
       const result = flow('TestProcess', f => {
         f.process('TestProcess', p => p.sequenceFlow('Source', 'Target'));
@@ -116,10 +131,18 @@ describe('@gftd/bpmn-sdk/dsl', () => {
 
       builders.forEach(builderName => {
         const result = flow('TestProcess', f => {
-          f.process('TestProcess', p => (p as any)[builderName]('TestEvent'));
+          f.process('TestProcess', p => {
+            if (builderName === 'boundaryEvent') {
+              // boundaryEvent needs attachedToRef parameter
+              (p as any)[builderName]('SomeTask', 'TestEvent', 'Test Event');
+            } else {
+              (p as any)[builderName]('TestEvent', 'Test Event');
+            }
+          });
         });
 
         expect(result.definitions.processes[0].flowElements).toHaveLength(1);
+        // DSL uses explicit ID when provided
         expect(result.definitions.processes[0].flowElements[0].id).toBe('TestEvent');
       });
     });
@@ -137,10 +160,11 @@ describe('@gftd/bpmn-sdk/dsl', () => {
 
       taskTypes.forEach(({ method, type }) => {
         const result = flow('TestProcess', f => {
-          f.process('TestProcess', p => (p as any)[method]('TestTask'));
+          f.process('TestProcess', p => (p as any)[method]('TestTask', 'Test Task'));
         });
 
         expect(result.definitions.processes[0].flowElements).toHaveLength(1);
+        // DSL uses explicit ID when provided
         expect(result.definitions.processes[0].flowElements[0].id).toBe('TestTask');
         expect((result.definitions.processes[0].flowElements[0] as any).taskType).toBe(type);
       });
@@ -157,10 +181,11 @@ describe('@gftd/bpmn-sdk/dsl', () => {
 
       gatewayTypes.forEach(({ method, type }) => {
         const result = flow('TestProcess', f => {
-          f.process('TestProcess', p => (p as any)[method]('TestGateway'));
+          f.process('TestProcess', p => (p as any)[method]('TestGateway', 'Test Gateway'));
         });
 
         expect(result.definitions.processes[0].flowElements).toHaveLength(1);
+        // DSL uses explicit ID when provided
         expect(result.definitions.processes[0].flowElements[0].id).toBe('TestGateway');
         expect((result.definitions.processes[0].flowElements[0] as any).gatewayType).toBe(type);
       });

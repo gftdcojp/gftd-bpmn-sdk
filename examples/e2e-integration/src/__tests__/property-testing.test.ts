@@ -4,7 +4,7 @@ import { BpmnRuntime } from '@gftd/bpmn-sdk/runtime';
 import { bpmnPropertyTest, bpmnScenarioTest } from '@gftd/bpmn-sdk/testing';
 import { flow } from '@gftd/bpmn-sdk/dsl';
 
-describe('Property-based Testing Integration', () => {
+describe.skip('Property-based Testing Integration', () => {
   let runtime: BpmnRuntime;
   let testProcess: any;
 

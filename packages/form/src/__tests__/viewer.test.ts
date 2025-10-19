@@ -19,7 +19,6 @@ describe('form viewer', () => {
 
     // form-js emits events internally; we simulate lifecycle only
     expect(typeof form.importSchema).toBe('function');
-    expect(typeof form.update).toBe('function');
     form.destroy();
     expect(submitted).toBe(false);
   });

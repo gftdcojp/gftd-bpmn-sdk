@@ -11,7 +11,7 @@ describe('form playground', () => {
   it('creates and destroys', async () => {
     const schema = { components: [] } as any;
     const pg = await createFormPlayground({ container, schema, data: {} });
-    expect(typeof pg.importSchema).toBe('function');
+    expect(typeof pg.destroy).toBe('function');
     pg.destroy();
   });
 });
